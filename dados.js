@@ -715,7 +715,7 @@ const galeria = [
    Projeto Infosaúde Jovem CCB e representam apenas o grupo participante,
    não a totalidade da população estudantil.
    ===================================================================== */
-const pesquisa = {
+/* const pesquisa = {
   titulo: "O que os estudantes responderam",
   publico: "Estudantes da Escola Estadual Carlos de Castro Brasil que responderam ao questionário aplicado pelo projeto.",
   periodo: "Pesquisa realizada durante o desenvolvimento do Projeto Infosaúde Jovem CCB.",
@@ -727,7 +727,7 @@ const pesquisa = {
     { percentual: 4.8, titulo: "Atendimento direto na escola", descricao: "relataram já ter recebido atendimento direto de saúde dentro da escola.", icone: "shield" },
     { percentual: 23.8, titulo: "Escola preparada", descricao: "sentem que a escola está totalmente preparada para lidar com questões de saúde dos estudantes.", icone: "leaf" }
   ]
-};
+}; */
 
 
 /* =====================================================================
@@ -788,21 +788,21 @@ const contatos = {
    O campo "foto" é opcional — se não existir, o site mostra um espaço
    reservado no lugar da imagem.
    ===================================================================== */
-const equipe = [
+/* const equipe = [
   { nome: "Profª. Coordenadora do Projeto", funcao: "Orientação pedagógica", descricao: "Responsável pela orientação geral do projeto e pela conexão com o Programa Saúde na Escola.", foto: { arquivo: "img/equipe/coordenadora.jpg", legenda: "Professora orientadora do Projeto Infosaúde Jovem CCB" } },
   { nome: "Estudante — Pesquisa", funcao: "Coordenação da pesquisa", descricao: "Liderou a elaboração e aplicação do questionário de pesquisa com os estudantes da escola.", foto: { arquivo: "img/equipe/estudante-pesquisa.jpg", legenda: "Estudante responsável pela coordenação da pesquisa" } },
   { nome: "Estudante — Conteúdo", funcao: "Produção de conteúdo educativo", descricao: "Responsável por organizar e revisar os textos educativos sobre as temáticas do PSE.", foto: { arquivo: "img/equipe/estudante-conteudo.jpg", legenda: "Estudante responsável pela produção de conteúdo" } },
   { nome: "Estudante — Design", funcao: "Identidade visual e design", descricao: "Desenvolveu a identidade visual do projeto, incluindo cores, ícones e layout do site.", foto: { arquivo: "img/equipe/estudante-design.jpg", legenda: "Estudante responsável pelo design do projeto" } },
   { nome: "Estudante — Fotografia", funcao: "Registro fotográfico", descricao: "Responsável por registrar as atividades e ações realizadas ao longo do projeto.", foto: { arquivo: "img/equipe/estudante-fotografia.jpg", legenda: "Estudante responsável pela fotografia do projeto" } },
   { nome: "Estudante — Comunicação", funcao: "Comunicação e divulgação", descricao: "Atuou na divulgação do projeto junto à comunidade escolar e na organização do mural de atividades.", foto: { arquivo: "img/equipe/estudante-comunicacao.jpg", legenda: "Estudante responsável pela comunicação do projeto" } }
-];
+]; */
 
 
 /* =====================================================================
    DIÁRIO DE BORDO
    COPIE UM BLOCO INTEIRO PARA ADICIONAR UMA NOVA ETAPA.
    ===================================================================== */
-const diario = [
+/* const diario = [
   { data: "2024-03-04", titulo: "Início do projeto", descricao: "Formação dos grupos de trabalho e primeiros estudos sobre as temáticas do PSE.", imagem: { arquivo: "img/mural/diario-inicio.jpg", legenda: "Primeira reunião de planejamento do projeto" } },
   { data: "2024-03-18", titulo: "Planejamento das ações", descricao: "Definição do cronograma de atividades, pesquisa e produção de conteúdo.", imagem: { arquivo: "img/mural/diario-planejamento.jpg", legenda: "Estudantes organizando o cronograma do projeto" } },
   { data: "2024-04-10", titulo: "Aplicação da pesquisa", descricao: "Elaboração e aplicação do questionário de pesquisa com estudantes da escola.", imagem: { arquivo: "img/mural/diario-pesquisa.jpg", legenda: "Aplicação do questionário de pesquisa" } },
@@ -810,7 +810,7 @@ const diario = [
   { data: "2024-06-14", titulo: "Parceria com a UBS", descricao: "Ação conjunta com a Unidade Básica de Saúde para verificação da situação vacinal.", imagem: { arquivo: "img/mural/diario-ubs.jpg", legenda: "Ação conjunta entre escola e UBS" } },
   { data: "2024-08-19", titulo: "Desenvolvimento do site", descricao: "Organização de todo o conteúdo, fotografias e dados da pesquisa para a construção do site do projeto.", imagem: { arquivo: "img/mural/diario-site.jpg", legenda: "Estudantes desenvolvendo o site do projeto" } },
   { data: "2024-09-13", titulo: "Apresentação final", descricao: "Apresentação dos resultados da pesquisa e do site à comunidade escolar.", imagem: { arquivo: "img/mural/diario-final.jpg", legenda: "Apresentação final do projeto" } }
-];
+]; */
 
 
 /* =====================================================================
