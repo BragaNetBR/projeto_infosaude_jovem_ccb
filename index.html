@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto Infosaúde Jovem CCB | Cuidar de hoje, transformar o amanhã!</title>
+<meta name="description" content="Portal educativo de saúde da Escola Estadual Carlos de Castro Brasil (Corumbá-MS), desenvolvido por estudantes do 3º ano do Ensino Médio em conexão com o Programa Saúde na Escola (PSE) e o Fortalece PSE.">
+<meta name="theme-color" content="#168A5A">
+<meta property="og:title" content="Projeto Infosaúde Jovem CCB">
+<meta property="og:description" content="Cuidar de hoje, transformar o amanhã! Portal educativo de saúde criado por estudantes da Escola Estadual Carlos de Castro Brasil.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#conteudo-principal" class="link-pular">Pular para o conteúdo principal</a>
+
+<header class="cabecalho" id="topo">
+  <div class="cabecalho-interno container">
+    <div class="marca">
+      <img id="img-logo-escola" class="logo" src="" alt="" width="48" height="48">
+      <div class="marca-texto">
+        <strong id="marca-nome-projeto">Projeto Infosaúde Jovem CCB</strong>
+        <span id="marca-escola">Escola Estadual Carlos de Castro Brasil · Corumbá-MS</span>
+      </div>
+      <img id="img-logo-pse" class="logo logo-pse" src="" alt="" width="48" height="48">
+    </div>
+
+    <button type="button" id="botao-menu" class="botao-menu" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu de navegação">
+      <span class="icone-hamburguer" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+
+    <nav id="menu-principal" class="menu-principal" aria-label="Navegação principal">
+      <ul id="lista-menu" class="lista-menu"></ul>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo-principal">
+
+  <!-- ===================== HERO / INÍCIO ===================== -->
+  <section id="inicio" class="secao hero">
+    <div class="hero-pinceladas" aria-hidden="true">
+      <span class="pincelada pincelada-verde"></span>
+      <span class="pincelada pincelada-azul"></span>
+      <span class="pincelada pincelada-amarelo"></span>
+      <span class="pincelada pincelada-laranja"></span>
+    </div>
+    <div class="container hero-conteudo">
+      <div class="hero-texto">
+        <p class="etiqueta">Programa Saúde na Escola · Fortalece PSE</p>
+        <h1 id="hero-titulo">Projeto Infosaúde Jovem CCB</h1>
+        <p class="hero-slogan" id="hero-slogan">“Cuidar de hoje, transformar o amanhã!”</p>
+        <p class="hero-descricao" id="hero-descricao"></p>
+        <div class="hero-acoes">
+          <a href="#tematicas" class="botao botao-primario">Explorar conteúdos</a>
+          <a href="#sobre" class="botao botao-secundario">Conhecer o projeto</a>
+        </div>
+      </div>
+      <div class="hero-imagem">
+        <div class="moldura-organica">
+          <img id="img-hero" src="" alt="" loading="eager" decoding="async">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SOBRE ===================== -->
+  <section id="sobre" class="secao secao-sobre">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-azul">Sobre o projeto</p>
+        <h2>O que é o Infosaúde Jovem CCB?</h2>
+      </header>
+
+      <div class="sobre-grade">
+        <div class="sobre-texto">
+          <p id="sobre-introducao"></p>
+          <p id="sobre-origem"></p>
+          <p id="sobre-papel-escola"></p>
+        </div>
+        <div class="sobre-imagem">
+          <img id="img-sobre-banner" src="" alt="" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <h3 class="subtitulo-secao">Objetivos do projeto</h3>
+      <div id="grade-objetivos" class="grade-objetivos"></div>
+
+      <div class="quem-fez">
+        <div class="quem-fez-imagem">
+          <img id="img-turma" src="" alt="" loading="lazy" decoding="async">
+        </div>
+        <div class="quem-fez-texto">
+          <h3 class="subtitulo-secao">Quem fez?</h3>
+          <p id="sobre-quem-fez"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TEMÁTICAS DO PSE ===================== -->
+  <section id="tematicas" class="secao secao-tematicas">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-verde">Referência do projeto</p>
+        <h2>As 14 temáticas do PSE</h2>
+        <p class="secao-intro">Estas são as 14 temáticas do Programa Saúde na Escola utilizadas como referência no Projeto Infosaúde Jovem CCB. Clique em qualquer card para saber mais.</p>
+      </header>
+      <div id="grade-tematicas" class="grade-tematicas"></div>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section id="faq" class="secao secao-faq">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-laranja">Perguntas e respostas</p>
+        <h2>Perguntas frequentes</h2>
+        <p class="secao-intro" id="faq-introducao"></p>
+      </header>
+
+      <div class="faq-controles">
+        <div class="campo-busca">
+          <label for="faq-busca" class="rotulo-visivel">Buscar pergunta</label>
+          <input type="search" id="faq-busca" placeholder="Digite uma palavra-chave, por exemplo: vacina, mental, UBS…" autocomplete="off">
+        </div>
+        <div class="campo-filtro">
+          <label for="faq-filtro" class="rotulo-visivel">Filtrar por temática</label>
+          <select id="faq-filtro">
+            <option value="todos">Todas as temáticas</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="faq-contador" class="faq-contador" role="status" aria-live="polite"></p>
+
+      <div id="faq-lista" class="faq-lista"></div>
+
+      <div class="faq-acoes">
+        <button type="button" id="faq-carregar-mais" class="botao botao-secundario">Carregar mais perguntas</button>
+      </div>
+
+      <p class="aviso-educativo" id="faq-aviso"></p>
+    </div>
+  </section>
+
+  <!-- ===================== MURAL ===================== -->
+  <section id="mural" class="secao secao-mural">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-rosa">Atividades realizadas</p>
+        <h2>Mural do projeto</h2>
+        <p class="secao-intro">Confira os principais registros das atividades desenvolvidas ao longo do Projeto Infosaúde Jovem CCB.</p>
+      </header>
+      <div id="grade-mural" class="grade-mural"></div>
+    </div>
+  </section>
+
+  <!-- ===================== GALERIA ===================== -->
+  <section id="galeria" class="secao secao-galeria">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-amarelo">Fotografias</p>
+        <h2>Galeria de fotos</h2>
+        <p class="secao-intro">Um pouco do que foi vivido durante o desenvolvimento do projeto.</p>
+      </header>
+      <div id="grade-galeria" class="grade-galeria"></div>
+    </div>
+  </section>
+
+  <!-- ===================== DADOS DA PESQUISA ===================== -->
+  <section id="dados" class="secao secao-dados">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-verde">Resultados da pesquisa</p>
+        <h2>O que os estudantes disseram</h2>
+        <p class="secao-intro" id="dados-introducao"></p>
+      </header>
+
+      <div class="dados-contexto" id="dados-contexto"></div>
+
+      <div id="grade-dados" class="grade-dados"></div>
+
+      <p class="aviso-educativo">Resultados obtidos entre os participantes da pesquisa realizada pelo Projeto Infosaúde Jovem CCB. Não representam a totalidade da população estudantil.</p>
+    </div>
+  </section>
+
+  <!-- ===================== GLOSSÁRIO ===================== -->
+  <section id="glossario" class="secao secao-glossario">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-azul">Palavras da saúde</p>
+        <h2>Glossário</h2>
+        <p class="secao-intro">Entenda termos comuns na área da saúde e do PSE.</p>
+      </header>
+
+      <div class="campo-busca">
+        <label for="glossario-busca" class="rotulo-visivel">Buscar termo no glossário</label>
+        <input type="search" id="glossario-busca" placeholder="Buscar termo, por exemplo: SUS, UBS, IST…" autocomplete="off">
+      </div>
+
+      <dl id="lista-glossario" class="lista-glossario"></dl>
+    </div>
+  </section>
+
+  <!-- ===================== CONTATOS ===================== -->
+  <section id="contatos" class="secao secao-contatos">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-laranja">Onde buscar ajuda</p>
+        <h2>Contatos úteis</h2>
+        <p class="secao-intro">Canais oficiais de apoio e cuidado em saúde. Em situações de emergência, procure ajuda imediatamente.</p>
+      </header>
+      <div id="grade-contatos" class="grade-contatos"></div>
+    </div>
+  </section>
+
+  <!-- ===================== EQUIPE ===================== -->
+  <section id="equipe" class="secao secao-equipe">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-rosa">Quem faz o projeto</p>
+        <h2>Equipe</h2>
+        <p class="secao-intro">Projeto desenvolvido por estudantes do 3º ano do Ensino Médio da Escola Estadual Carlos de Castro Brasil.</p>
+      </header>
+      <div id="grade-equipe" class="grade-equipe"></div>
+    </div>
+  </section>
+
+  <!-- ===================== DIÁRIO DE BORDO ===================== -->
+  <section id="diario" class="secao secao-diario">
+    <div class="container">
+      <header class="secao-cabecalho">
+        <p class="etiqueta etiqueta-verde">Linha do tempo</p>
+        <h2>Diário de bordo</h2>
+        <p class="secao-intro">Acompanhe as principais etapas do desenvolvimento do Projeto Infosaúde Jovem CCB.</p>
+      </header>
+      <ol id="linha-diario" class="linha-diario"></ol>
+    </div>
+  </section>
+
+  <!-- ===================== REFERÊNCIAS ===================== -->
+  <section id="referencias" class="secao secao-referencias">
+    <div class="container">
+      <h2 class="titulo-discreto">Fontes e referências</h2>
+      <ul id="lista-referencias" class="lista-referencias"></ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-grade">
+    <div>
+      <strong id="rodape-nome-projeto">Projeto Infosaúde Jovem CCB</strong>
+      <p id="rodape-escola">Escola Estadual Carlos de Castro Brasil — Corumbá-MS</p>
+      <p class="rodape-slogan" id="rodape-slogan">“Cuidar de hoje, transformar o amanhã!”</p>
+    </div>
+    <div>
+      <p>Projeto desenvolvido por estudantes do 3º ano do Ensino Médio, em conexão com o Programa Saúde na Escola (PSE) e o Fortalece PSE.</p>
+      <p class="aviso-educativo">Conteúdo educativo. Em caso de dúvida ou necessidade de atendimento, procure um profissional de saúde ou serviço do SUS.</p>
+    </div>
+  </div>
+  <p class="rodape-copy">© <span id="rodape-ano"></span> Projeto Infosaúde Jovem CCB · Escola Estadual Carlos de Castro Brasil · Corumbá-MS</p>
+</footer>
+
+<!-- ===================== MODAL DAS TEMÁTICAS ===================== -->
+<div id="modal-tema" class="modal" hidden>
+  <div class="modal-fundo" data-fechar-modal></div>
+  <div class="modal-caixa" role="dialog" aria-modal="true" aria-labelledby="modal-tema-titulo">
+    <button type="button" class="modal-fechar" data-fechar-modal aria-label="Fechar detalhes da temática">✕</button>
+    <div class="modal-conteudo" id="modal-tema-conteudo">
+      <!-- conteúdo gerado via JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LIGHTBOX DE IMAGENS ===================== -->
+<div id="lightbox" class="lightbox" hidden>
+  <div class="lightbox-fundo" data-fechar-lightbox></div>
+  <div class="lightbox-caixa" role="dialog" aria-modal="true" aria-label="Visualização ampliada da imagem">
+    <button type="button" class="lightbox-fechar" data-fechar-lightbox aria-label="Fechar imagem ampliada">✕</button>
+    <img id="lightbox-imagem" src="" alt="">
+    <p id="lightbox-legenda" class="lightbox-legenda"></p>
+  </div>
+</div>
+
+<script src="dados.js"></script>
+<script>
+/* =====================================================================
+   PROJETO INFOSAÚDE JOVEM CCB — LÓGICA DA APLICAÇÃO
+   Organização: CONFIG > SELETORES > ESTADO > UTILITÁRIOS > RENDERIZAÇÃO
+   > TEMÁTICAS > FAQ > GALERIA > MENU > MODAIS > EVENTOS > INICIALIZAÇÃO
+   ===================================================================== */
+
+/* ---------------------- SELETORES ---------------------- */
+const $ = (sel, ctx) => (ctx || document).querySelector(sel);
+const $all = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
+
+/* ---------------------- ESTADO ---------------------- */
+const estado = {
+  faqTermo: "",
+  faqTema: "todos",
+  faqQuantidadeVisivel: (config && config.perguntasPorPagina) || 20,
+  ultimoFocoModal: null,
+  ultimoFocoLightbox: null
+};
+
+/* ---------------------- ÍCONES (SVG line art) ---------------------- */
+const ICONES = {
+  leaf: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 22 20 10 40 8c2 20-10 30-26 30-2 0-4 0-4 0Z"/><path d="M10 38C16 30 22 24 32 16"/></svg>',
+  run: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="9" r="4"/><path d="M14 40l7-9 5-6-3-9-9 3"/><path d="M26 25l6 5 8-2"/><path d="M20 22l-9 6"/></svg>',
+  apple: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 18c-7 0-12 6-12 14 0 6 4 10 8 10 3 0 3-2 6-2s3 2 6 2c4 0 9-5 9-12 0-6-4-11-9-11-2 0-3 1-4 1"/><path d="M24 18c0-4 2-7 6-8"/></svg>',
+  hands: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24c6-8 12-8 16-4l10 10"/><path d="M42 24c-6-8-12-8-16-4L16 30"/><path d="M8 26l6 6c2 2 5 2 7 0"/><path d="M40 26l-6 6c-2 2-5 2-7 0"/></svg>',
+  shield: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6l16 6v10c0 12-7 18-16 20-9-2-16-8-16-20V12Z"/><path d="M17 24l5 5 9-11"/></svg>',
+  drop: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6c8 10 14 18 14 26a14 14 0 0 1-28 0c0-8 6-16 14-26Z"/></svg>',
+  syringe: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M34 6l8 8-4 4-8-8Z"/><path d="M38 10l-20 20"/><path d="M12 30l-6 10 4 4 10-6"/><path d="M12 30l6 6"/><path d="M24 18l6 6"/></svg>',
+  ribbon: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="16" r="9"/><path d="M18 24l-5 18 11-6 11 6-5-18"/></svg>',
+  noDrugs: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="17"/><path d="M13 13l22 22"/></svg>',
+  tooth: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 8c-5 0-8 3-11 3-3 0-5-2-5 3 0 8 3 10 4 18 1 5 3 8 5 8 3 0 3-9 7-9s4 9 7 9c2 0 4-3 5-8 1-8 4-10 4-18 0-5-2-3-5-3-3 0-6-3-11-3Z"/></svg>',
+  ear: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 8c8 0 12 7 12 14 0 8-6 10-9 15-2 3-1 7-5 7-4 0-6-3-6-7"/><path d="M22 22a5 5 0 1 1 6 5c-2 1-3 3-3 5"/><path d="M18 14c-6 4-8 9-8 14 0 4 2 7 5 9"/></svg>',
+  eye: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24s7-12 20-12 20 12 20 12-7 12-20 12S4 24 4 24Z"/><circle cx="24" cy="24" r="6"/></svg>',
+  virus: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="9"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4"/></svg>',
+  brain: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 8a6 6 0 0 0-6 6 6 6 0 0 0-3 10 6 6 0 0 0 4 10c1 2 3 4 6 4V8Z"/><path d="M29 8a6 6 0 0 1 6 6 6 6 0 0 1 3 10 6 6 0 0 1-4 10c-1 2-3 4-6 4V8Z"/></svg>',
+  coracao: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40C10 30 4 22 4 14a10 10 0 0 1 18-6 10 10 0 0 1 18 6c0 8-6 16-20 26Z"/></svg>',
+  pessoas: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="6"/><circle cx="34" cy="16" r="6"/><path d="M4 40c0-8 6-13 12-13s12 5 12 13"/><path d="M22 40c0-8 6-13 12-13s12 5 12 13"/></svg>',
+  estetoscopio: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12a8 8 0 0 0 16 0V6"/><path d="M36 20v6a12 12 0 0 1-24 0v-4"/><circle cx="38" cy="24" r="4"/></svg>',
+  fechar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>'
+};
+function icone(nome, extraClasse) {
+  const svg = ICONES[nome] || ICONES.leaf;
+  return '<span class="icone-svg ' + (extraClasse || '') + '" aria-hidden="true">' + svg + '</span>';
+}
+
+/* ---------------------- UTILITÁRIOS ---------------------- */
+function textoOuVazio(v) { return v === undefined || v === null ? "" : v; }
+
+function elementoImagem(imgObj, opcoes) {
+  opcoes = opcoes || {};
+  if (!imgObj || !imgObj.arquivo) {
+    return criarFallbackImagem(opcoes.legendaFallback || "");
+  }
+  const alt = imgObj.decorativa ? "" : (imgObj.legenda || "");
+  const img = document.createElement("img");
+  img.src = imgObj.arquivo;
+  img.alt = alt;
+  img.loading = opcoes.eager ? "eager" : "lazy";
+  img.decoding = "async";
+  if (opcoes.classe) img.className = opcoes.classe;
+  img.addEventListener("error", function trocarPorFallback() {
+    const fallback = criarFallbackImagem(imgObj.legenda || opcoes.legendaFallback || "");
+    fallback.className = img.className;
+    if (img.parentNode) img.parentNode.replaceChild(fallback, img);
+  }, { once: true });
+  return img;
+}
+
+function criarFallbackImagem(legenda) {
+  const div = document.createElement("div");
+  div.className = "imagem-indisponivel";
+  div.setAttribute("role", "img");
+  div.setAttribute("aria-label", legenda ? legenda : "Imagem em breve");
+  div.innerHTML = icone("leaf") + '<span>Foto em breve</span>';
+  return div;
+}
+
+function formatarData(dataISO) {
+  if (!dataISO) return "";
+  const partes = dataISO.split("-");
+  if (partes.length !== 3) return dataISO;
+  const meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  const dia = parseInt(partes[2], 10);
+  const mes = meses[parseInt(partes[1], 10) - 1] || "";
+  return dia + " de " + mes + " de " + partes[0];
+}
+
+function debounce(fn, atraso) {
+  let temporizador;
+  return function() {
+    clearTimeout(temporizador);
+    const args = arguments;
+    temporizador = setTimeout(function() { fn.apply(null, args); }, atraso);
+  };
+}
+
+function bloquearRolagemPagina(bloquear) {
+  document.body.style.overflow = bloquear ? "hidden" : "";
+}
+
+/* ======================================================================
+   RENDERIZAÇÃO — SEÇÕES ESTÁTICAS DO dados.js (textos, imagens, header)
+   ====================================================================== */
+function aplicarTextosGerais() {
+  document.title = "Projeto Infosaúde Jovem CCB | " + textos.slogan;
+  $("#marca-nome-projeto").textContent = textos.nomeProjeto;
+  $("#marca-escola").textContent = textos.nomeEscola + " · " + textos.cidade;
+  $("#hero-titulo").textContent = textos.nomeProjeto;
+  $("#hero-slogan").textContent = "“" + textos.slogan + "”";
+  $("#hero-descricao").textContent = textos.heroDescricao;
+  $("#sobre-introducao").textContent = textos.sobreIntroducao;
+  $("#sobre-origem").textContent = textos.sobreOrigem;
+  $("#sobre-papel-escola").textContent = textos.sobrePapelEscola;
+  $("#sobre-quem-fez").textContent = textos.sobreQuemFez;
+  $("#faq-introducao").textContent = textos.faqIntroducao;
+  $("#faq-aviso").textContent = textos.avisoEducativo;
+  $("#dados-introducao").textContent = textos.dadosIntroducao;
+  $("#rodape-nome-projeto").textContent = textos.nomeProjeto;
+  $("#rodape-escola").textContent = textos.nomeEscola + " — " + textos.cidade;
+  $("#rodape-slogan").textContent = "“" + textos.slogan + "”";
+  $("#rodape-ano").textContent = new Date().getFullYear();
+
+  const logoEscola = $("#img-logo-escola");
+  logoEscola.src = imagens.logoEscola.arquivo;
+  logoEscola.alt = imagens.logoEscola.legenda;
+  logoEscola.addEventListener("error", function () { logoEscola.style.visibility = "hidden"; }, { once: true });
+
+  const logoPSE = $("#img-logo-pse");
+  logoPSE.src = imagens.logoPSE.arquivo;
+  logoPSE.alt = imagens.logoPSE.legenda;
+  logoPSE.addEventListener("error", function () { logoPSE.style.visibility = "hidden"; }, { once: true });
+
+  substituirImagemPorId("img-hero", imagens.hero, true);
+  substituirImagemPorId("img-sobre-banner", imagens.sobreBanner, false);
+  substituirImagemPorId("img-turma", imagens.turma, false);
+}
+
+function substituirImagemPorId(id, imgObj, eager) {
+  const alvo = document.getElementById(id);
+  if (!alvo) return;
+  const novo = elementoImagem(imgObj, { eager: eager, classe: alvo.className });
+  novo.id = id;
+  alvo.parentNode.replaceChild(novo, alvo);
+}
+
+const objetivosProjeto = [
+  { titulo: "Informação", texto: "Levar informação de saúde clara e confiável para toda a comunidade escolar.", icone: "leaf" },
+  { titulo: "Prevenção", texto: "Fortalecer hábitos de prevenção em diferentes áreas da saúde.", icone: "shield" },
+  { titulo: "Protagonismo juvenil", texto: "Valorizar o papel dos estudantes como produtores de conhecimento e cuidado.", icone: "pessoas" },
+  { titulo: "Educação em saúde", texto: "Conectar conteúdos escolares às temáticas do Programa Saúde na Escola.", icone: "estetoscopio" },
+  { titulo: "Integração escola–saúde", texto: "Fortalecer a parceria entre a escola e a Unidade Básica de Saúde.", icone: "hands" },
+  { titulo: "Participação comunitária", texto: "Envolver famílias e comunidade nas ações e reflexões sobre saúde.", icone: "coracao" }
+];
+
+function renderizarObjetivos() {
+  const container = $("#grade-objetivos");
+  const frag = document.createDocumentFragment();
+  objetivosProjeto.forEach(function (obj) {
+    const card = document.createElement("article");
+    card.className = "cartao cartao-objetivo";
+    card.innerHTML = icone(obj.icone, "icone-destaque") + "<h4>" + obj.titulo + "</h4><p>" + obj.texto + "</p>";
+    frag.appendChild(card);
+  });
+  container.appendChild(frag);
+}
+
+/* ======================================================================
+   MENU / NAVEGAÇÃO
+   ====================================================================== */
+const secoesMenu = [
+  { id: "inicio", rotulo: "Início", ativo: config.mostrarInicio },
+  { id: "sobre", rotulo: "Sobre", ativo: config.mostrarSobre },
+  { id: "tematicas", rotulo: "Temáticas", ativo: config.mostrarTematicas },
+  { id: "faq", rotulo: "Perguntas", ativo: config.mostrarFAQ },
+  { id: "mural", rotulo: "Mural", ativo: config.mostrarMural },
+  { id: "galeria", rotulo: "Galeria", ativo: config.mostrarGaleria },
+  { id: "dados", rotulo: "Dados", ativo: config.mostrarDados },
+  { id: "glossario", rotulo: "Glossário", ativo: config.mostrarGlossario },
+  { id: "contatos", rotulo: "Contatos", ativo: config.mostrarContatos },
+  { id: "equipe", rotulo: "Equipe", ativo: config.mostrarEquipe }
+];
+
+function renderizarMenu() {
+  const lista = $("#lista-menu");
+  const frag = document.createDocumentFragment();
+  secoesMenu.filter(function (s) { return s.ativo; }).forEach(function (s) {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = "#" + s.id;
+    a.textContent = s.rotulo;
+    li.appendChild(a);
+    frag.appendChild(li);
+  });
+  lista.appendChild(frag);
+}
+
+function aplicarVisibilidadeSecoes() {
+  const mapa = {
+    inicio: config.mostrarInicio,
+    sobre: config.mostrarSobre,
+    tematicas: config.mostrarTematicas,
+    faq: config.mostrarFAQ,
+    mural: config.mostrarMural,
+    galeria: config.mostrarGaleria,
+    dados: config.mostrarDados,
+    glossario: config.mostrarGlossario,
+    contatos: config.mostrarContatos,
+    equipe: config.mostrarEquipe,
+    diario: config.mostrarDiario
+  };
+  Object.keys(mapa).forEach(function (id) {
+    const secao = document.getElementById(id);
+    if (secao && !mapa[id]) secao.remove();
+  });
+}
+
+function configurarMenuMobile() {
+  const botao = $("#botao-menu");
+  const menu = $("#menu-principal");
+
+  function abrirMenu() {
+    menu.classList.add("aberto");
+    botao.setAttribute("aria-expanded", "true");
+    botao.setAttribute("aria-label", "Fechar menu de navegação");
+  }
+  function fecharMenu() {
+    menu.classList.remove("aberto");
+    botao.setAttribute("aria-expanded", "false");
+    botao.setAttribute("aria-label", "Abrir menu de navegação");
+  }
+  botao.addEventListener("click", function () {
+    if (menu.classList.contains("aberto")) fecharMenu(); else abrirMenu();
+  });
+  menu.addEventListener("click", function (ev) {
+    if (ev.target.tagName === "A") fecharMenu();
+  });
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape" && menu.classList.contains("aberto")) {
+      fecharMenu();
+      botao.focus();
+    }
+  });
+  let larguraAnterior = window.innerWidth;
+  window.addEventListener("resize", debounce(function () {
+    const larguraAtual = window.innerWidth;
+    if (larguraAtual >= 900 && larguraAnterior < 900) fecharMenu();
+    larguraAnterior = larguraAtual;
+  }, 150));
+}
+
+/* ======================================================================
+   TEMÁTICAS DO PSE
+   ====================================================================== */
+function renderizarTematicas() {
+  const container = $("#grade-tematicas");
+  if (!tematicas || !tematicas.length) {
+    container.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.muralVazio + '</p>';
+    return;
+  }
+  container.classList.add(config.layoutTemas === "lista" ? "layout-lista" : "layout-grid");
+  const frag = document.createDocumentFragment();
+  tematicas.forEach(function (tema, indice) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "cartao cartao-tema tema-cor-" + tema.cor;
+    card.setAttribute("data-indice", indice);
+    card.innerHTML =
+      '<span class="tema-numero">' + String(tema.numero).padStart(2, "0") + '</span>' +
+      icone(tema.icone, "icone-destaque") +
+      '<h3>' + tema.titulo + '</h3>' +
+      '<p>' + tema.resumo + '</p>' +
+      '<span class="tema-abrir">Ver detalhes →</span>';
+    frag.appendChild(card);
+  });
+  container.appendChild(frag);
+  container.addEventListener("click", function (ev) {
+    const card = ev.target.closest(".cartao-tema");
+    if (!card) return;
+    abrirModalTema(parseInt(card.getAttribute("data-indice"), 10), card);
+  });
+}
+
+function abrirModalTema(indice, elementoOrigem) {
+  const tema = tematicas[indice];
+  if (!tema) return;
+  estado.ultimoFocoModal = elementoOrigem || document.activeElement;
+
+  const modal = $("#modal-tema");
+  const conteudo = $("#modal-tema-conteudo");
+  const m = tema.modal || {};
+
+  let html = "";
+  html += '<p class="modal-etiqueta tema-cor-' + tema.cor + '">Temática ' + String(tema.numero).padStart(2, "0") + '</p>';
+  html += '<h2 id="modal-tema-titulo">' + tema.titulo + '</h2>';
+
+  const figuraImagem = document.createElement("div");
+  figuraImagem.className = "modal-imagem";
+  figuraImagem.appendChild(elementoImagem(tema.imagem, { classe: "" }));
+
+  html += '<p class="modal-introducao">' + textoOuVazio(m.introducao) + '</p>';
+
+  if (m.oQueE) html += '<h3>O que é?</h3><p>' + m.oQueE + '</p>';
+  if (m.porQueImporta) html += '<h3>Por que isso importa?</h3><p>' + m.porQueImporta + '</p>';
+  if (m.oQueVocePodeFazer && m.oQueVocePodeFazer.length) {
+    html += '<h3>O que você pode fazer?</h3><ul class="lista-marcada">';
+    m.oQueVocePodeFazer.forEach(function (item) { html += '<li>' + item + '</li>'; });
+    html += '</ul>';
+  }
+  if (m.sinaisDeAtencao && m.sinaisDeAtencao.length) {
+    html += '<h3>Sinais de atenção</h3><ul class="lista-marcada">';
+    m.sinaisDeAtencao.forEach(function (item) { html += '<li>' + item + '</li>'; });
+    html += '</ul>';
+  }
+  if (m.ondeBuscarAjuda) html += '<h3>Onde buscar ajuda?</h3><p>' + m.ondeBuscarAjuda + '</p>';
+
+  conteudo.innerHTML = html;
+  conteudo.insertBefore(figuraImagem, conteudo.querySelector(".modal-introducao"));
+
+  if (m.galeria && m.galeria.length) {
+    const tituloGaleria = document.createElement("h3");
+    tituloGaleria.textContent = "Galeria da temática";
+    const galeriaDiv = document.createElement("div");
+    galeriaDiv.className = "modal-galeria";
+    m.galeria.forEach(function (img) {
+      const el = elementoImagem(img, { classe: "modal-galeria-img" });
+      galeriaDiv.appendChild(el);
+    });
+    conteudo.appendChild(tituloGaleria);
+    conteudo.appendChild(galeriaDiv);
+  }
+
+  if (m.fontes && m.fontes.length) {
+    const tituloFontes = document.createElement("h3");
+    tituloFontes.textContent = "Fontes e referências";
+    const listaFontes = document.createElement("ul");
+    listaFontes.className = "lista-fontes";
+    m.fontes.forEach(function (f) {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = f.url;
+      a.textContent = f.titulo;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      li.appendChild(a);
+      if (f.descricao) {
+        const span = document.createElement("span");
+        span.textContent = " — " + f.descricao;
+        li.appendChild(span);
+      }
+      listaFontes.appendChild(li);
+    });
+    conteudo.appendChild(tituloFontes);
+    conteudo.appendChild(listaFontes);
+  }
+
+  const avisoFinal = document.createElement("p");
+  avisoFinal.className = "aviso-educativo";
+  avisoFinal.textContent = textos.avisoEducativo;
+  conteudo.appendChild(avisoFinal);
+
+  abrirModalGenerico(modal);
+}
+
+/* ======================================================================
+   MODAIS — FUNÇÕES GENÉRICAS DE ABERTURA/FECHAMENTO ACESSÍVEL
+   ====================================================================== */
+function abrirModalGenerico(modal) {
+  modal.hidden = false;
+  bloquearRolagemPagina(true);
+  const fechar = modal.querySelector(".modal-fechar, .lightbox-fechar");
+  if (fechar) fechar.focus();
+  document.addEventListener("keydown", listenerEscapeModal);
+}
+function fecharModalGenerico(modal, focoAnterior) {
+  modal.hidden = true;
+  bloquearRolagemPagina(false);
+  document.removeEventListener("keydown", listenerEscapeModal);
+  if (focoAnterior && typeof focoAnterior.focus === "function") focoAnterior.focus();
+}
+function listenerEscapeModal(ev) {
+  if (ev.key !== "Escape") return;
+  const modalTema = $("#modal-tema");
+  const lightbox = $("#lightbox");
+  if (!modalTema.hidden) fecharModalGenerico(modalTema, estado.ultimoFocoModal);
+  if (!lightbox.hidden) fecharModalGenerico(lightbox, estado.ultimoFocoLightbox);
+}
+
+function configurarFechamentoModais() {
+  $all("[data-fechar-modal]").forEach(function (el) {
+    el.addEventListener("click", function () { fecharModalGenerico($("#modal-tema"), estado.ultimoFocoModal); });
+  });
+  $all("[data-fechar-lightbox]").forEach(function (el) {
+    el.addEventListener("click", function () { fecharModalGenerico($("#lightbox"), estado.ultimoFocoLightbox); });
+  });
+}
+
+/* ======================================================================
+   FAQ — BUSCA, FILTRO E RENDERIZAÇÃO INCREMENTAL
+   ====================================================================== */
+function popularFiltroFAQ() {
+  const select = $("#faq-filtro");
+  const temasUnicos = Array.from(new Set(perguntas.map(function (p) { return p.tema; }))).sort();
+  const frag = document.createDocumentFragment();
+  temasUnicos.forEach(function (t) {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t;
+    frag.appendChild(opt);
+  });
+  select.appendChild(frag);
+}
+
+function filtrarPerguntas() {
+  const termo = estado.faqTermo.trim().toLowerCase();
+  return perguntas.filter(function (p) {
+    const bateTema = estado.faqTema === "todos" || p.tema === estado.faqTema;
+    if (!bateTema) return false;
+    if (!termo) return true;
+    return p.pergunta.toLowerCase().indexOf(termo) !== -1 || p.resposta.toLowerCase().indexOf(termo) !== -1;
+  });
+}
+
+function renderizarFAQ() {
+  const lista = $("#faq-lista");
+  const contador = $("#faq-contador");
+  const botaoMais = $("#faq-carregar-mais");
+  const resultados = filtrarPerguntas();
+
+  lista.innerHTML = "";
+
+  if (!resultados.length) {
+    lista.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.faqSemResultado + '</p>';
+    contador.textContent = "Nenhuma pergunta encontrada.";
+    botaoMais.hidden = true;
+    return;
+  }
+
+  const visiveis = resultados.slice(0, estado.faqQuantidadeVisivel);
+  const frag = document.createDocumentFragment();
+
+  visiveis.forEach(function (p, i) {
+    const item = document.createElement("details");
+    item.className = "faq-item";
+    if (i === 0) item.open = true;
+    const idBotao = "faq-resposta-" + p.id;
+    item.innerHTML =
+      '<summary class="faq-pergunta" id="faq-pergunta-' + p.id + '" aria-controls="' + idBotao + '">' +
+        '<span>' + p.pergunta + '</span>' +
+        '<span class="faq-tema-etiqueta">' + p.tema + '</span>' +
+      '</summary>' +
+      '<div class="faq-resposta" id="' + idBotao + '">' + p.resposta + '</div>';
+    frag.appendChild(item);
+  });
+
+  lista.appendChild(frag);
+
+  contador.textContent = resultados.length === 1
+    ? "1 pergunta encontrada."
+    : Math.min(visiveis.length, resultados.length) + " de " + resultados.length + " perguntas exibidas.";
+
+  botaoMais.hidden = visiveis.length >= resultados.length;
+}
+
+function configurarFAQ() {
+  popularFiltroFAQ();
+  renderizarFAQ();
+
+  const busca = $("#faq-busca");
+  const filtro = $("#faq-filtro");
+  const botaoMais = $("#faq-carregar-mais");
+
+  busca.addEventListener("input", debounce(function () {
+    estado.faqTermo = busca.value;
+    estado.faqQuantidadeVisivel = config.perguntasPorPagina;
+    renderizarFAQ();
+  }, 250));
+
+  filtro.addEventListener("change", function () {
+    estado.faqTema = filtro.value;
+    estado.faqQuantidadeVisivel = config.perguntasPorPagina;
+    renderizarFAQ();
+  });
+
+  botaoMais.addEventListener("click", function () {
+    estado.faqQuantidadeVisivel += config.perguntasPorPagina;
+    renderizarFAQ();
+  });
+}
+
+/* ======================================================================
+   MURAL DE ATIVIDADES
+   ====================================================================== */
+function renderizarMural() {
+  const container = $("#grade-mural");
+  if (!mural || !mural.length) {
+    container.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.muralVazio + '</p>';
+    return;
+  }
+  container.classList.add(config.layoutMural === "lista" ? "layout-lista" : "layout-grid");
+  const frag = document.createDocumentFragment();
+  mural.slice().sort(function (a, b) { return new Date(b.data) - new Date(a.data); }).forEach(function (item) {
+    const card = document.createElement("article");
+    card.className = "cartao cartao-mural";
+    const figura = document.createElement("div");
+    figura.className = "cartao-mural-imagem";
+    figura.appendChild(elementoImagem(item.imagem, {}));
+    card.appendChild(figura);
+    const corpo = document.createElement("div");
+    corpo.className = "cartao-mural-corpo";
+    corpo.innerHTML =
+      (item.categoria ? '<span class="mural-categoria">' + item.categoria + '</span>' : '') +
+      '<h3>' + item.titulo + '</h3>' +
+      '<p>' + item.descricao + '</p>' +
+      '<time datetime="' + item.data + '">' + formatarData(item.data) + '</time>';
+    card.appendChild(corpo);
+    frag.appendChild(card);
+  });
+  container.appendChild(frag);
+}
+
+/* ======================================================================
+   GALERIA GERAL + LIGHTBOX
+   ====================================================================== */
+function renderizarGaleria() {
+  const container = $("#grade-galeria");
+  if (!galeria || !galeria.length) {
+    container.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.galeriaVazia + '</p>';
+    return;
+  }
+  container.classList.add(config.layoutGaleria === "lista" ? "layout-lista" : "layout-grid");
+  const frag = document.createDocumentFragment();
+  galeria.forEach(function (foto, indice) {
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.className = "item-galeria";
+    botao.setAttribute("data-indice", indice);
+    botao.setAttribute("aria-label", "Ampliar foto: " + foto.legenda);
+    botao.appendChild(elementoImagem(foto, {}));
+    const legenda = document.createElement("span");
+    legenda.className = "item-galeria-legenda";
+    legenda.textContent = foto.legenda;
+    botao.appendChild(legenda);
+    frag.appendChild(botao);
+  });
+  container.appendChild(frag);
+
+  container.addEventListener("click", function (ev) {
+    const botao = ev.target.closest(".item-galeria");
+    if (!botao) return;
+    abrirLightbox(parseInt(botao.getAttribute("data-indice"), 10), botao);
+  });
+}
+
+function abrirLightbox(indice, elementoOrigem) {
+  const foto = galeria[indice];
+  if (!foto) return;
+  estado.ultimoFocoLightbox = elementoOrigem || document.activeElement;
+  const imagem = $("#lightbox-imagem");
+  imagem.src = foto.arquivo;
+  imagem.alt = foto.legenda || "";
+  $("#lightbox-legenda").textContent = foto.legenda || "";
+  abrirModalGenerico($("#lightbox"));
+}
+
+/* ======================================================================
+   DADOS DA PESQUISA
+   ====================================================================== */
+function renderizarDados() {
+  const container = $("#grade-dados");
+  const contexto = $("#dados-contexto");
+  if (!pesquisa || !pesquisa.itens || !pesquisa.itens.length) {
+    container.innerHTML = '<p class="estado-vazio">Os dados da pesquisa serão publicados em breve.</p>';
+    return;
+  }
+  contexto.innerHTML =
+    '<p><strong>Público pesquisado:</strong> ' + textoOuVazio(pesquisa.publico) + '</p>' +
+    '<p><strong>Período:</strong> ' + textoOuVazio(pesquisa.periodo) + '</p>' +
+    '<p><strong>Contexto:</strong> ' + textoOuVazio(pesquisa.contexto) + '</p>';
+
+  const frag = document.createDocumentFragment();
+  pesquisa.itens.forEach(function (item) {
+    const percentualLimitado = Math.min(item.percentual, 100);
+    const card = document.createElement("article");
+    card.className = "cartao cartao-estatistica";
+    card.innerHTML =
+      icone(item.icone, "icone-destaque") +
+      '<p class="estatistica-percentual">' + item.percentual.toString().replace(".", ",") + '%</p>' +
+      '<div class="barra-estatistica"><span style="width:' + percentualLimitado + '%"></span></div>' +
+      '<h3>' + item.titulo + '</h3>' +
+      '<p>' + item.descricao + '</p>';
+    frag.appendChild(card);
+  });
+  container.appendChild(frag);
+}
+
+/* ======================================================================
+   GLOSSÁRIO
+   ====================================================================== */
+function renderizarGlossario(termoBusca) {
+  const lista = $("#lista-glossario");
+  const termo = (termoBusca || "").trim().toLowerCase();
+  const filtrados = glossario.filter(function (g) {
+    if (!termo) return true;
+    return g.termo.toLowerCase().indexOf(termo) !== -1 || g.definicao.toLowerCase().indexOf(termo) !== -1;
+  });
+
+  lista.innerHTML = "";
+  if (!filtrados.length) {
+    lista.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.glossarioSemResultado + '</p>';
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  filtrados.forEach(function (g) {
+    const dt = document.createElement("dt");
+    dt.textContent = g.termo;
+    const dd = document.createElement("dd");
+    dd.textContent = g.definicao + (g.tema ? " (Tema: " + g.tema + ")" : "");
+    frag.appendChild(dt);
+    frag.appendChild(dd);
+  });
+  lista.appendChild(frag);
+}
+
+function configurarGlossario() {
+  renderizarGlossario("");
+  const busca = $("#glossario-busca");
+  busca.addEventListener("input", debounce(function () {
+    renderizarGlossario(busca.value);
+  }, 200));
+}
+
+/* ======================================================================
+   CONTATOS ÚTEIS
+   ====================================================================== */
+function renderizarContatos() {
+  const container = $("#grade-contatos");
+  const frag = document.createDocumentFragment();
+
+  const cardUBS = document.createElement("article");
+  cardUBS.className = "cartao cartao-contato";
+  cardUBS.innerHTML = icone("estetoscopio", "icone-destaque") + "<h3>" + contatos.ubs.titulo + "</h3><p>" + contatos.ubs.descricao + "</p><p class='contato-dica'>" + contatos.ubs.dica + "</p>";
+  frag.appendChild(cardUBS);
+
+  const cardSUS = document.createElement("article");
+  cardSUS.className = "cartao cartao-contato";
+  cardSUS.innerHTML = icone("shield", "icone-destaque") + "<h3>" + contatos.sus.titulo + "</h3><p>" + contatos.sus.descricao + "</p>" +
+    (contatos.sus.link ? '<a class="link-externo" target="_blank" rel="noopener noreferrer" href="' + contatos.sus.link.url + '">' + contatos.sus.link.titulo + '</a>' : "");
+  frag.appendChild(cardSUS);
+
+  const cardCVV = document.createElement("article");
+  cardCVV.className = "cartao cartao-contato cartao-destaque";
+  cardCVV.innerHTML = icone("coracao", "icone-destaque") + "<h3>" + contatos.cvv.titulo + "</h3><p class='contato-numero'>" + contatos.cvv.numero + "</p><p>" + contatos.cvv.descricao + "</p>" +
+    '<a class="link-externo" target="_blank" rel="noopener noreferrer" href="' + contatos.cvv.link.url + '">' + contatos.cvv.link.titulo + '</a>';
+  frag.appendChild(cardCVV);
+
+  contatos.emergencias.forEach(function (e) {
+    const card = document.createElement("article");
+    card.className = "cartao cartao-contato";
+    card.innerHTML = icone("shield", "icone-destaque") + "<h3>" + e.titulo + "</h3><p class='contato-numero'>" + e.numero + "</p><p>" + e.descricao + "</p>";
+    frag.appendChild(card);
+  });
+
+  container.appendChild(frag);
+}
+
+/* ======================================================================
+   EQUIPE
+   ====================================================================== */
+function renderizarEquipe() {
+  const container = $("#grade-equipe");
+  if (!equipe || !equipe.length) {
+    container.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.equipeVazia + '</p>';
+    return;
+  }
+  container.classList.add(config.layoutEquipe === "lista" ? "layout-lista" : "layout-grid");
+  const frag = document.createDocumentFragment();
+  equipe.forEach(function (pessoa) {
+    const card = document.createElement("article");
+    card.className = "cartao cartao-equipe";
+    const foto = document.createElement("div");
+    foto.className = "cartao-equipe-foto";
+    foto.appendChild(elementoImagem(pessoa.foto, {}));
+    card.appendChild(foto);
+    const corpo = document.createElement("div");
+    corpo.innerHTML = "<h3>" + pessoa.nome + "</h3><p class='equipe-funcao'>" + pessoa.funcao + "</p><p>" + pessoa.descricao + "</p>";
+    card.appendChild(corpo);
+    frag.appendChild(card);
+  });
+  container.appendChild(frag);
+}
+
+/* ======================================================================
+   DIÁRIO DE BORDO
+   ====================================================================== */
+function renderizarDiario() {
+  const lista = $("#linha-diario");
+  if (!diario || !diario.length) {
+    lista.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.diarioVazio + '</p>';
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  diario.forEach(function (item) {
+    const li = document.createElement("li");
+    li.className = "diario-item";
+    const figura = document.createElement("div");
+    figura.className = "diario-item-imagem";
+    figura.appendChild(elementoImagem(item.imagem, {}));
+    li.innerHTML =
+      '<time datetime="' + item.data + '">' + formatarData(item.data) + '</time>' +
+      '<h3>' + item.titulo + '</h3><p>' + item.descricao + '</p>';
+    li.insertBefore(figura, li.firstChild);
+    frag.appendChild(li);
+  });
+  lista.appendChild(frag);
+}
+
+/* ======================================================================
+   REFERÊNCIAS
+   ====================================================================== */
+function renderizarReferencias() {
+  const lista = $("#lista-referencias");
+  const frag = document.createDocumentFragment();
+  referencias.forEach(function (r) {
+    const li = document.createElement("li");
+    li.innerHTML = '<a href="' + r.url + '" target="_blank" rel="noopener noreferrer">' + r.titulo + '</a> — ' + r.descricao;
+    frag.appendChild(li);
+  });
+  lista.appendChild(frag);
+}
+
+/* ======================================================================
+   ANIMAÇÕES DE ENTRADA (respeita prefers-reduced-motion)
+   ====================================================================== */
+function configurarAnimacoesEntrada() {
+  const prefereReduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefereReduzido || typeof IntersectionObserver === "undefined") return;
+  const observador = new IntersectionObserver(function (entradas) {
+    entradas.forEach(function (entrada) {
+      if (entrada.isIntersecting) {
+        entrada.target.classList.add("visivel");
+        observador.unobserve(entrada.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  $all(".secao, .cartao").forEach(function (el) {
+    el.classList.add("animar-entrada");
+    observador.observe(el);
+  });
+}
+
+/* ======================================================================
+   INICIALIZAÇÃO
+   ====================================================================== */
+function inicializar() {
+  aplicarTextosGerais();
+  renderizarMenu();
+  aplicarVisibilidadeSecoes();
+  configurarMenuMobile();
+
+  if (config.mostrarSobre) renderizarObjetivos();
+  if (config.mostrarTematicas) renderizarTematicas();
+  if (config.mostrarFAQ) configurarFAQ();
+  if (config.mostrarMural) renderizarMural();
+  if (config.mostrarGaleria) renderizarGaleria();
+  if (config.mostrarDados) renderizarDados();
+  if (config.mostrarGlossario) configurarGlossario();
+  if (config.mostrarContatos) renderizarContatos();
+  if (config.mostrarEquipe) renderizarEquipe();
+  if (config.mostrarDiario) renderizarDiario();
+
+  renderizarReferencias();
+  configurarFechamentoModais();
+  configurarAnimacoesEntrada();
+}
+
+document.addEventListener("DOMContentLoaded", inicializar);
+</script>
+</body>
+</html>
