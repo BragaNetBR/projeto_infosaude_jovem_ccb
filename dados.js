@@ -53,13 +53,13 @@ const config = {
   mostrarSobre: true,
   mostrarTematicas: true,
   mostrarFAQ: true,
-  mostrarMural: true,
-  mostrarGaleria: true,
-  mostrarDados: true,
-  mostrarGlossario: true,
+  mostrarMural: false,
+  mostrarGaleria: false,
+  mostrarDados: false,
+  mostrarGlossario: false,
   mostrarContatos: true,
-  mostrarEquipe: true,
-  mostrarDiario: true,
+  mostrarEquipe: false,
+  mostrarDiario: false,
 
   // Layout: use apenas "grid" ou "lista"
   layoutTemas: "grid",
@@ -629,84 +629,14 @@ const perguntas = [
    MURAL DE ATIVIDADES
    COPIE UM BLOCO INTEIRO PARA ADICIONAR UMA NOVA ATIVIDADE.
    ===================================================================== */
-const mural = [
-  {
-    titulo: "Abertura do Projeto Infosaúde Jovem CCB",
-    descricao: "Apresentação do projeto para a comunidade escolar, com explicação sobre os objetivos e a relação com o PSE.",
-    data: "2024-03-18",
-    categoria: "Ação em sala",
-    imagem: { arquivo: "img/mural/abertura.jpg", legenda: "Apresentação inicial do projeto para os estudantes" }
-  },
-  {
-    titulo: "Aplicação da pesquisa com os estudantes",
-    descricao: "Estudantes do 3º ano aplicaram questionário sobre saúde e bem-estar com colegas da escola.",
-    data: "2024-04-10",
-    categoria: "Pesquisa",
-    imagem: { arquivo: "img/mural/pesquisa.jpg", legenda: "Estudantes aplicando questionário de pesquisa" }
-  },
-  {
-    titulo: "Oficina sobre saúde bucal",
-    descricao: "Atividade prática com orientações sobre escovação e cuidados com a saúde bucal.",
-    data: "2024-05-06",
-    categoria: "Oficina",
-    imagem: { arquivo: "img/mural/oficina-bucal.jpg", legenda: "Oficina prática sobre saúde bucal" }
-  },
-  {
-    titulo: "Roda de conversa sobre saúde mental",
-    descricao: "Momento de escuta e diálogo entre estudantes sobre ansiedade, estresse e bem-estar emocional.",
-    data: "2024-05-27",
-    categoria: "Ação em sala",
-    imagem: { arquivo: "img/mural/roda-mental.jpg", legenda: "Roda de conversa sobre saúde mental" }
-  },
-  {
-    titulo: "Ação conjunta com a UBS: verificação vacinal",
-    descricao: "Parceria com a Unidade Básica de Saúde para conferência das cadernetas de vacinação dos estudantes.",
-    data: "2024-06-14",
-    categoria: "Ação com UBS",
-    imagem: { arquivo: "img/mural/acao-ubs.jpg", legenda: "Equipe de saúde realizando verificação vacinal na escola" }
-  },
-  {
-    titulo: "Campanha de alimentação saudável",
-    descricao: "Exposição de cartazes e degustação de alimentos saudáveis preparados pelos próprios estudantes.",
-    data: "2024-07-02",
-    categoria: "Campanha",
-    imagem: { arquivo: "img/mural/campanha-alimentacao.jpg", legenda: "Campanha de alimentação saudável organizada pelos estudantes" }
-  },
-  {
-    titulo: "Produção do site do projeto",
-    descricao: "Estudantes organizaram os conteúdos, fotografias e dados da pesquisa para a construção deste site.",
-    data: "2024-08-19",
-    categoria: "Produção dos estudantes",
-    imagem: { arquivo: "img/mural/producao-site.jpg", legenda: "Estudantes organizando o conteúdo do site do projeto" }
-  },
-  {
-    titulo: "Apresentação dos resultados à comunidade escolar",
-    descricao: "Divulgação dos resultados da pesquisa e do site do projeto para professores, famílias e estudantes.",
-    data: "2024-09-13",
-    categoria: "Ação em sala",
-    imagem: { arquivo: "img/mural/apresentacao-final.jpg", legenda: "Apresentação final do projeto para a comunidade escolar" }
-  }
-];
+
 
 
 /* =====================================================================
    GALERIA GERAL DE FOTOS
    COPIE UM BLOCO INTEIRO PARA ADICIONAR UMA NOVA FOTO.
    ===================================================================== */
-const galeria = [
-  { arquivo: "img/galeria/foto-01.jpg", legenda: "Estudantes reunidos na abertura do projeto", categoria: "Abertura" },
-  { arquivo: "img/galeria/foto-02.jpg", legenda: "Aplicação da pesquisa em sala de aula", categoria: "Pesquisa" },
-  { arquivo: "img/galeria/foto-03.jpg", legenda: "Oficina sobre saúde bucal com os estudantes", categoria: "Oficina" },
-  { arquivo: "img/galeria/foto-04.jpg", legenda: "Roda de conversa sobre saúde mental", categoria: "Saúde mental" },
-  { arquivo: "img/galeria/foto-05.jpg", legenda: "Ação conjunta com a Unidade Básica de Saúde", categoria: "Ação com UBS" },
-  { arquivo: "img/galeria/foto-06.jpg", legenda: "Campanha de alimentação saudável na escola", categoria: "Campanha" },
-  { arquivo: "img/galeria/foto-07.jpg", legenda: "Estudantes organizando os cartazes do projeto", categoria: "Produção" },
-  { arquivo: "img/galeria/foto-08.jpg", legenda: "Apresentação dos resultados da pesquisa", categoria: "Apresentação" },
-  { arquivo: "img/galeria/foto-09.jpg", legenda: "Atividade física realizada na quadra da escola", categoria: "Atividade física" },
-  { arquivo: "img/galeria/foto-10.jpg", legenda: "Verificação da caderneta de vacinação", categoria: "Vacinação" },
-  { arquivo: "img/galeria/foto-11.jpg", legenda: "Estudantes participando de mutirão de limpeza", categoria: "Saúde ambiental" },
-  { arquivo: "img/galeria/foto-12.jpg", legenda: "Turma reunida para foto ao final do projeto", categoria: "Encerramento" }
-];
+
 
 
 /* =====================================================================
@@ -715,19 +645,6 @@ const galeria = [
    Projeto Infosaúde Jovem CCB e representam apenas o grupo participante,
    não a totalidade da população estudantil.
    ===================================================================== */
-/* const pesquisa = {
-  titulo: "O que os estudantes responderam",
-  publico: "Estudantes da Escola Estadual Carlos de Castro Brasil que responderam ao questionário aplicado pelo projeto.",
-  periodo: "Pesquisa realizada durante o desenvolvimento do Projeto Infosaúde Jovem CCB.",
-  contexto: "Resultados obtidos entre os participantes da pesquisa realizada pelo projeto. Não representam a totalidade da população estudantil nem substituem levantamentos epidemiológicos oficiais.",
-  itens: [
-    { percentual: 71.4, titulo: "Ansiedade e estresse", descricao: "dos estudantes participantes identificaram a ansiedade e o estresse como os principais problemas de saúde entre os jovens.", icone: "brain" },
-    { percentual: 90.5, titulo: "Interesse em bem-estar emocional", descricao: "afirmaram querer saber mais sobre bem-estar emocional e saúde mental.", icone: "ribbon" },
-    { percentual: 60, titulo: "Campanhas escola + UBS", descricao: "disseram que participariam de campanhas de saúde organizadas em parceria entre a escola e a UBS.", icone: "hands" },
-    { percentual: 4.8, titulo: "Atendimento direto na escola", descricao: "relataram já ter recebido atendimento direto de saúde dentro da escola.", icone: "shield" },
-    { percentual: 23.8, titulo: "Escola preparada", descricao: "sentem que a escola está totalmente preparada para lidar com questões de saúde dos estudantes.", icone: "leaf" }
-  ]
-}; */
 
 
 /* =====================================================================
@@ -788,29 +705,12 @@ const contatos = {
    O campo "foto" é opcional — se não existir, o site mostra um espaço
    reservado no lugar da imagem.
    ===================================================================== */
-/* const equipe = [
-  { nome: "Profª. Coordenadora do Projeto", funcao: "Orientação pedagógica", descricao: "Responsável pela orientação geral do projeto e pela conexão com o Programa Saúde na Escola.", foto: { arquivo: "img/equipe/coordenadora.jpg", legenda: "Professora orientadora do Projeto Infosaúde Jovem CCB" } },
-  { nome: "Estudante — Pesquisa", funcao: "Coordenação da pesquisa", descricao: "Liderou a elaboração e aplicação do questionário de pesquisa com os estudantes da escola.", foto: { arquivo: "img/equipe/estudante-pesquisa.jpg", legenda: "Estudante responsável pela coordenação da pesquisa" } },
-  { nome: "Estudante — Conteúdo", funcao: "Produção de conteúdo educativo", descricao: "Responsável por organizar e revisar os textos educativos sobre as temáticas do PSE.", foto: { arquivo: "img/equipe/estudante-conteudo.jpg", legenda: "Estudante responsável pela produção de conteúdo" } },
-  { nome: "Estudante — Design", funcao: "Identidade visual e design", descricao: "Desenvolveu a identidade visual do projeto, incluindo cores, ícones e layout do site.", foto: { arquivo: "img/equipe/estudante-design.jpg", legenda: "Estudante responsável pelo design do projeto" } },
-  { nome: "Estudante — Fotografia", funcao: "Registro fotográfico", descricao: "Responsável por registrar as atividades e ações realizadas ao longo do projeto.", foto: { arquivo: "img/equipe/estudante-fotografia.jpg", legenda: "Estudante responsável pela fotografia do projeto" } },
-  { nome: "Estudante — Comunicação", funcao: "Comunicação e divulgação", descricao: "Atuou na divulgação do projeto junto à comunidade escolar e na organização do mural de atividades.", foto: { arquivo: "img/equipe/estudante-comunicacao.jpg", legenda: "Estudante responsável pela comunicação do projeto" } }
-]; */
 
 
 /* =====================================================================
    DIÁRIO DE BORDO
    COPIE UM BLOCO INTEIRO PARA ADICIONAR UMA NOVA ETAPA.
    ===================================================================== */
-/* const diario = [
-  { data: "2024-03-04", titulo: "Início do projeto", descricao: "Formação dos grupos de trabalho e primeiros estudos sobre as temáticas do PSE.", imagem: { arquivo: "img/mural/diario-inicio.jpg", legenda: "Primeira reunião de planejamento do projeto" } },
-  { data: "2024-03-18", titulo: "Planejamento das ações", descricao: "Definição do cronograma de atividades, pesquisa e produção de conteúdo.", imagem: { arquivo: "img/mural/diario-planejamento.jpg", legenda: "Estudantes organizando o cronograma do projeto" } },
-  { data: "2024-04-10", titulo: "Aplicação da pesquisa", descricao: "Elaboração e aplicação do questionário de pesquisa com estudantes da escola.", imagem: { arquivo: "img/mural/diario-pesquisa.jpg", legenda: "Aplicação do questionário de pesquisa" } },
-  { data: "2024-05-06", titulo: "Ações educativas", descricao: "Realização de oficinas e rodas de conversa sobre diferentes temáticas do PSE.", imagem: { arquivo: "img/mural/diario-acoes.jpg", legenda: "Oficina educativa realizada com os estudantes" } },
-  { data: "2024-06-14", titulo: "Parceria com a UBS", descricao: "Ação conjunta com a Unidade Básica de Saúde para verificação da situação vacinal.", imagem: { arquivo: "img/mural/diario-ubs.jpg", legenda: "Ação conjunta entre escola e UBS" } },
-  { data: "2024-08-19", titulo: "Desenvolvimento do site", descricao: "Organização de todo o conteúdo, fotografias e dados da pesquisa para a construção do site do projeto.", imagem: { arquivo: "img/mural/diario-site.jpg", legenda: "Estudantes desenvolvendo o site do projeto" } },
-  { data: "2024-09-13", titulo: "Apresentação final", descricao: "Apresentação dos resultados da pesquisa e do site à comunidade escolar.", imagem: { arquivo: "img/mural/diario-final.jpg", legenda: "Apresentação final do projeto" } }
-]; */
 
 
 /* =====================================================================
