@@ -82,12 +82,12 @@ const textos = {
   nomeEscola: "Escola Estadual Carlos de Castro Brasil",
   cidade: "Corumbá-MS",
 
-  heroDescricao: "Um projeto criado por estudantes do 3º ano do Ensino Médio para levar informação de saúde confiável, acolhedora e transformadora a toda a comunidade escolar, em conexão com o Programa Saúde na Escola (PSE).",
+  heroDescricao: "Com intuito de levar informação de saúde confiável a toda comunidade escolar, em conexão com o Programa Saúde na Escola (PSE).",
 
-  sobreIntroducao: "O Infosaúde Jovem CCB nasceu da vontade de estudantes da Escola Estadual Carlos de Castro Brasil de aproximar a saúde do dia a dia escolar. O projeto foi desenvolvido dentro das ações do Programa Saúde na Escola (PSE) e do Fortalece PSE, unindo protagonismo juvenil, pesquisa e educação para transformar informação técnica em conteúdo acessível para estudantes, professores, famílias e comunidade.",
+  sobreIntroducao: "Aproximar a saúde do dia a dia escolar. O projeto foi desenvolvido dentro das ações do Programa Saúde na Escola (PSE) e do Fortalece PSE, unindo protagonismo juvenil, pesquisa e educação para transformar informação técnica em conteúdo acessível para estudantes, professores, famílias e comunidade.",
   sobreOrigem: "",
-  sobrePapelEscola: "A escola atua como espaço de aprendizagem, articulação com a Unidade Básica de Saúde (UBS) de referência e ponto de encontro entre saúde e educação, fortalecendo o papel da escola como promotora de saúde.",
-  sobreQuemFez: "Alunos do 3º ano do Ensino Médio da Escola Estadual Carlos de Castro Brasil, com orientação de professores da unidade escolar.",
+  sobrePapelEscola: "A escola atua como espaço de aprendizagem, integração com a Unidade Básica de Saúde (UBS) de referência e ponto de encontro entre saúde e educação, fortalecendo o papel da escola como promotora de saúde.",
+  sobreQuemFez: "Alunos dos 3º anos do Ensino Médio da Escola Estadual Carlos de Castro Brasil, com orientação da unidade escolar.",
 
   faqIntroducao: "Reunimos aqui as dúvidas mais comuns levantadas pelos estudantes durante o desenvolvimento do projeto. Use a busca ou os filtros para encontrar rapidamente o que você precisa saber.",
 
