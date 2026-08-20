@@ -116,7 +116,7 @@ const textos = {
                    (nesse caso ela não precisa de legenda)
    ===================================================================== */
 const imagens = {
-  logoEscola: { arquivo: "img/logo-escola.png", legenda: "Logotipo da Escola Estadual Carlos de Castro Brasil" },
+  logoEscola: { arquivo: "img/logo-escola.jpg", legenda: "Logotipo da Escola Estadual Carlos de Castro Brasil" },
   logoPSE: { arquivo: "img/logo-pse.png", legenda: "Logotipo do Fortalece PSE — Programa Saúde na Escola" },
 
   hero: {
