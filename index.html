@@ -812,14 +812,31 @@ function renderizarMural() {
 /* ======================================================================
    GALERIA GERAL + LIGHTBOX
    ====================================================================== */
+// Função auxiliar para formatar data como DD/MM/AAAA
+function formatarDataCurta(dataISO) {
+  if (!dataISO) return "";
+  const partes = dataISO.split("-");
+  if (partes.length !== 3) return dataISO;
+  return partes[2] + "/" + partes[1] + "/" + partes[0];
+}
+
 function renderizarGaleria() {
   const container = $("#grade-galeria");
   if (!galeria || !galeria.length) {
     container.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.galeriaVazia + '</p>';
     return;
   }
+
+  // Ordena da mais recente para a mais antiga
+  galeria.sort(function(a, b) {
+    const dataA = a.data ? new Date(a.data) : new Date(0);
+    const dataB = b.data ? new Date(b.data) : new Date(0);
+    return dataB - dataA;
+  });
+
   container.classList.add(config.layoutGaleria === "lista" ? "layout-lista" : "layout-grid");
   const frag = document.createDocumentFragment();
+
   galeria.forEach(function (foto, indice) {
     const botao = document.createElement("button");
     botao.type = "button";
@@ -827,12 +844,26 @@ function renderizarGaleria() {
     botao.setAttribute("data-indice", indice);
     botao.setAttribute("aria-label", "Ampliar foto: " + foto.legenda);
     botao.appendChild(elementoImagem(foto, {}));
+
+    // Legenda
     const legenda = document.createElement("span");
     legenda.className = "item-galeria-legenda";
     legenda.textContent = foto.legenda;
     botao.appendChild(legenda);
+
+    // Data no formato DD/MM/AAAA
+    if (foto.data) {
+      const dataEl = document.createElement("time");
+      dataEl.className = "item-galeria-data";
+      dataEl.dateTime = foto.data;
+      dataEl.textContent = formatarDataCurta(foto.data);
+      legenda.appendChild(document.createElement("br"));
+      legenda.appendChild(dataEl);
+    }
+
     frag.appendChild(botao);
   });
+
   container.appendChild(frag);
 
   container.addEventListener("click", function (ev) {
