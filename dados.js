@@ -710,7 +710,9 @@ const perguntas = [
    COPIE UM BLOCO INTEIRO PARA ADICIONAR UMA NOVA FOTO.
    ===================================================================== */
 
-
+const galeria = [
+  { arquivo: "img/galeria/foto-01.jpg", legenda: "Estudantes reunidos na abertura do projeto", categoria: "Abertura",data:"2026-05-07" }
+];
 
 /* =====================================================================
    DADOS DA PESQUISA (SEÇÃO "DADOS")
