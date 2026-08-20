@@ -85,7 +85,7 @@ const textos = {
   heroDescricao: "Um projeto criado por estudantes do 3º ano do Ensino Médio para levar informação de saúde confiável, acolhedora e transformadora a toda a comunidade escolar, em conexão com o Programa Saúde na Escola (PSE).",
 
   sobreIntroducao: "O Infosaúde Jovem CCB nasceu da vontade de estudantes da Escola Estadual Carlos de Castro Brasil de aproximar a saúde do dia a dia escolar. O projeto foi desenvolvido dentro das ações do Programa Saúde na Escola (PSE) e do Fortalece PSE, unindo protagonismo juvenil, pesquisa e educação para transformar informação técnica em conteúdo acessível para estudantes, professores, famílias e comunidade.",
-  sobreOrigem: "A iniciativa surgiu a partir de estudos em sala de aula sobre as temáticas do PSE, de rodas de conversa com a comunidade escolar e de uma pesquisa aplicada pelos próprios estudantes, que revelou temas urgentes como saúde mental, prevenção e acesso a serviços de saúde.",
+  sobreOrigem: "",
   sobrePapelEscola: "A escola atua como espaço de aprendizagem, articulação com a Unidade Básica de Saúde (UBS) de referência e ponto de encontro entre saúde e educação, fortalecendo o papel da escola como promotora de saúde.",
   sobreQuemFez: "Alunos do 3º ano do Ensino Médio da Escola Estadual Carlos de Castro Brasil, com orientação de professores da unidade escolar.",
 
