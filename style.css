@@ -463,6 +463,15 @@ details[open] > .faq-pergunta::after { content: "–"; }
 .item-galeria:hover img { transform: scale(1.06); }
 .item-galeria-legenda { position: absolute; inset-inline: 0; bottom: 0; background: linear-gradient(0deg, rgba(0,0,0,0.72), transparent); color: #fff; font-size: 0.78rem; padding: 1.5rem 0.6rem 0.5rem; text-align: left; }
 
+.item-galeria-data {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 0.15rem;
+  letter-spacing: 0.02em;
+}
+
 .lightbox, .modal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; padding: var(--espaco-sm); }
 .lightbox-fundo, .modal-fundo { position: absolute; inset: 0; background: rgba(20, 30, 27, 0.72); }
 .lightbox-caixa { position: relative; z-index: 1; max-width: min(92vw, 900px); max-height: 90vh; background: var(--cor-fundo-card); border-radius: var(--raio-medio); padding: var(--espaco-md); overflow: auto; box-shadow: var(--sombra-forte); }
