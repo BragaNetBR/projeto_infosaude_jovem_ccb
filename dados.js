@@ -117,7 +117,7 @@ const textos = {
    ===================================================================== */
 const imagens = {
   logoEscola: { arquivo: "img/logo-escola.jpg", legenda: "Logotipo da Escola Estadual Carlos de Castro Brasil" },
-  logoPSE: { arquivo: "img/logo-pse.jpg", legenda: "Logotipo do Fortalece PSE — Programa Saúde na Escola" },
+  logoPSE: { arquivo: "img/logo-pse.png", legenda: "Logotipo do Fortalece PSE — Programa Saúde na Escola" },
 
   hero: {
     arquivo: "img/inicio/capa-projeto.jpg",
