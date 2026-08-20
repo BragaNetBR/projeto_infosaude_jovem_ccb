@@ -54,7 +54,7 @@ const config = {
   mostrarTematicas: true,
   mostrarFAQ: true,
   mostrarMural: false,
-  mostrarGaleria: false,
+  mostrarGaleria: true,
   mostrarDados: false,
   mostrarGlossario: false,
   mostrarContatos: true,
