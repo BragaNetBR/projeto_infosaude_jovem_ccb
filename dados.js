@@ -731,7 +731,8 @@ const galeria = [
   },
   {
     arquivo: "img/galeria/foto-04.jpg",
-    legenda: "Visita de campo e reconhecimento dos equipamentos públicos de saúde no território.",
+    legenda: "Visita ao Eco Ponto durante a pesquisa de campo sobre saúde ambiental e descarte correto.",
+    categoria: "Saúde ambiental",
     categoria: "Pesquisa",
     data: "2026-06-19"
   },
@@ -743,8 +744,7 @@ const galeria = [
   },
   {
     arquivo: "img/galeria/foto-06.jpg",
-    legenda: "Visita ao Eco Ponto durante a pesquisa de campo sobre saúde ambiental e descarte correto.",
-    categoria: "Saúde ambiental",
+    legenda: "Visita de campo e reconhecimento dos equipamentos públicos de saúde no território.",
     data: "2026-06-19"
   },
   {
@@ -755,7 +755,7 @@ const galeria = [
   },
   {
     arquivo: "img/galeria/foto-08.jpg",
-    legenda: "Mural de mapeamento territorial integrando os pontos visitados e o mapa da região.",
+    legenda: "Roda de planejamento e organização.",
     categoria: "Pesquisa",
     data: "2026-06-19"
   },
@@ -767,7 +767,7 @@ const galeria = [
   },
   {
     arquivo: "img/galeria/foto-10.jpg",
-    legenda: "Roda de planejamento e organização com a equipe do Fortalece PSE.",
+    legenda: "Mural de mapeamento territorial integrando os pontos visitados e o mapa da região.",
     categoria: "Oficina",
     data: "2026-06-09"
   },
