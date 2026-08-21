@@ -500,6 +500,12 @@ details[open] > .faq-pergunta::after { content: "–"; }
 .lightbox-legenda { text-align: center; margin-top: var(--espaco-sm); color: var(--cor-texto-suave); }
 .lightbox-fechar, .modal-fechar { position: absolute; top: 0.8rem; right: 0.8rem; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--cor-borda); background: #fff; cursor: pointer; font-size: 1rem; z-index: 2; }
 
+.lightbox-imagem {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 /* =========================================================================
    MODAL DE TEMÁTICAS
    ========================================================================= */
