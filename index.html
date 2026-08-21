@@ -1130,14 +1130,14 @@ function inicializar() {
   configurarFechamentoModais();
   configurarAnimacoesEntrada();
 
-const botaoGaleriaMais = $("#galeria-carregar-mais");
-if (botaoGaleriaMais) {
-  botaoGaleriaMais.addEventListener("click", function() {
-    estado.galeriaQuantidadeVisivel += 5; // incrementa de 5 em 5 (ou outro valor)
-    renderizarGaleria(); // re-renderiza
-  });
-}
+  const botaoGaleriaMais = $("#galeria-carregar-mais");
 
+  if (botaoGaleriaMais) {
+    botaoGaleriaMais.addEventListener("click", function () {
+      estado.galeriaQuantidadeVisivel += 5;
+      renderizarGaleria();
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", inicializar);
