@@ -472,6 +472,27 @@ details[open] > .faq-pergunta::after { content: "–"; }
   letter-spacing: 0.02em;
 }
 
+/* Impede arrastar e selecionar a imagem */
+.item-galeria img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Camada invisível que cobre a imagem e captura o clique direito */
+.item-galeria-protecao {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Garante que a legenda fique acima da camada de proteção */
+.item-galeria-legenda {
+  z-index: 3;
+}
+
 .lightbox, .modal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; padding: var(--espaco-sm); }
 .lightbox-fundo, .modal-fundo { position: absolute; inset: 0; background: rgba(20, 30, 27, 0.72); }
 .lightbox-caixa { position: relative; z-index: 1; max-width: min(92vw, 900px); max-height: 90vh; background: var(--cor-fundo-card); border-radius: var(--raio-medio); padding: var(--espaco-md); overflow: auto; box-shadow: var(--sombra-forte); }
