@@ -947,6 +947,11 @@ function abrirLightbox(indice, elementoOrigem) {
   imagem.alt = foto.legenda || "";
   $("#lightbox-legenda").textContent = foto.legenda || "";
   abrirModalGenerico($("#lightbox"));
+const imagem = $("#lightbox-imagem");
+imagem.src = foto.arquivo;
+imagem.alt = foto.legenda || "";
+imagem.setAttribute("draggable", "false");
+imagem.style.pointerEvents = "none";
 }
 
 const botaoGaleriaMais = $("#galeria-carregar-mais");
