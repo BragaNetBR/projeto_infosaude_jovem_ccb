@@ -711,7 +711,108 @@ const perguntas = [
    ===================================================================== */
 
 const galeria = [
-  { arquivo: "img/galeria/foto-01.jpg", legenda: "Estudantes reunidos na abertura do projeto", categoria: "Abertura",data:"2026-05-07" }
+  {
+    arquivo: "img/galeria/foto-01.jpg",
+    legenda: "Estudantes reunidos na abertura do projeto",
+    categoria: "Abertura",
+    data: "2026-05-07"
+  },
+  {
+    arquivo: "img/galeria/foto-02.jpg",
+    legenda: "Reunião e alinhamento dos estudantes para o planejamento das atividades do projeto.",
+    categoria: "Oficina",
+    data: "2026-06-09"
+  },
+  {
+    arquivo: "img/galeria/foto-03.jpg",
+    legenda: "Estudantes reunidos na entrada da escola para o início do mapeamento territorial.",
+    categoria: "Pesquisa",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-04.jpg",
+    legenda: "Visita de campo e reconhecimento dos equipamentos públicos de saúde no território.",
+    categoria: "Pesquisa",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-05.jpg",
+    legenda: "Reconhecimento do entorno escolar em frente ao 3º Grupamento de Bombeiros Militar.",
+    categoria: "Pesquisa",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-06.jpg",
+    legenda: "Visita ao Eco Ponto durante a pesquisa de campo sobre saúde ambiental e descarte correto.",
+    categoria: "Saúde ambiental",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-07.jpg",
+    legenda: "Oficina prática de confecção e personalização da Caixa de Dúvidas.",
+    categoria: "Produção",
+    data: "2026-08-19"
+  },
+  {
+    arquivo: "img/galeria/foto-08.jpg",
+    legenda: "Mural de mapeamento territorial integrando os pontos visitados e o mapa da região.",
+    categoria: "Pesquisa",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-09.jpg",
+    legenda: "Sistematização dos dados e registros fotográficos da pesquisa territorial.",
+    categoria: "Pesquisa",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-10.jpg",
+    legenda: "Roda de planejamento e organização com a equipe do Fortalece PSE.",
+    categoria: "Oficina",
+    data: "2026-06-09"
+  },
+  {
+    arquivo: "img/galeria/foto-11.jpg",
+    legenda: "Registro dos estudantes durante o circuito de mapeamento do território.",
+    categoria: "Pesquisa",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-12.jpg",
+    legenda: "Ponto de parada da equipe durante o levantamento dos serviços do entorno.",
+    categoria: "Pesquisa",
+    data: "2026-06-19"
+  },
+  {
+    arquivo: "img/galeria/foto-13.jpg",
+    legenda: "Debate e análise de questionários durante a oficina temática de saúde.",
+    categoria: "Oficina",
+    data: "2026-06-09"
+  },
+  {
+    arquivo: "img/galeria/foto-14.jpg",
+    legenda: "Instalamos nossa Caixa de Dúvidas para que todos os estudantes possam fazer perguntas de forma totalmente anônima sobre qualquer assunto relacionado à saúde. Escreva sua pergunta, dobre o papel e participe! Sua dúvida será respondida nas nossas próximas atividades temáticas.",
+    categoria: "Campanha",
+    data: "2026-08-19"
+  },
+  {
+    arquivo: "img/galeria/foto-15.jpg",
+    legenda: "Apresentação da Caixa de Dúvidas nas salas de aula para mobilização dos estudantes.",
+    categoria: "Apresentação",
+    data: "2026-08-20"
+  },
+  {
+    arquivo: "img/galeria/foto-16.jpg",
+    legenda: "Diálogo com a profissional de saúde na UBS para articulação das ações escolares.",
+    categoria: "Ação com UBS",
+    data: "2026-08-20"
+  },
+  {
+    arquivo: "img/galeria/foto-17.jpg",
+    legenda: "Equipe do projeto reunida na unidade básica de saúde após a visita técnica.",
+    categoria: "Ação com UBS",
+    data: "2026-08-20"
+  }
 ];
 
 /* =====================================================================
