@@ -826,28 +826,75 @@ function formatarDataCurta(dataISO) {
 
 function renderizarGaleria() {
   const container = $("#grade-galeria");
+  const botaoCarregarMais = $("#galeria-carregar-mais");
+
   if (!galeria || !galeria.length) {
     container.innerHTML = '<p class="estado-vazio">' + textos.mensagensEstado.galeriaVazia + '</p>';
+    if (botaoCarregarMais) botaoCarregarMais.hidden = true;
     return;
   }
 
-  // Ordena da mais recente para a mais antiga
+  // Ordena a galeria da mais recente para a mais antiga (uma vez)
   galeria.sort(function(a, b) {
     const dataA = a.data ? new Date(a.data) : new Date(0);
     const dataB = b.data ? new Date(b.data) : new Date(0);
-    return dataB - dataA;
+    return dataB - dataA; // decrescente
   });
 
   container.classList.add(config.layoutGaleria === "lista" ? "layout-lista" : "layout-grid");
+  container.innerHTML = ""; // limpa o container
+
+  const totalFotos = galeria.length;
+  const visiveis = Math.min(estado.galeriaQuantidadeVisivel, totalFotos);
   const frag = document.createDocumentFragment();
 
-  galeria.forEach(function (foto, indice) {
+  // Renderiza apenas até o limite definido
+  for (let i = 0; i < visiveis; i++) {
+    const foto = galeria[i];
     const botao = document.createElement("button");
     botao.type = "button";
     botao.className = "item-galeria";
-    botao.setAttribute("data-indice", indice);
+    botao.setAttribute("data-indice", i); // índice real no array ordenado
     botao.setAttribute("aria-label", "Ampliar foto: " + foto.legenda);
     botao.appendChild(elementoImagem(foto, {}));
+
+galeria.forEach(function (foto, indice) {
+  const botao = document.createElement("button");
+  botao.type = "button";
+  botao.className = "item-galeria";
+  botao.setAttribute("data-indice", indice);
+  botao.setAttribute("aria-label", "Ampliar foto: " + foto.legenda);
+
+  // Cria a imagem
+  const img = elementoImagem(foto, {});
+  img.setAttribute("draggable", "false");      // impede arrastar
+  img.style.pointerEvents = "none";            // imagem não recebe eventos do mouse
+  botao.appendChild(img);
+
+  // Camada transparente de proteção (bloqueia botão direito sobre a imagem)
+  const protecao = document.createElement("span");
+  protecao.className = "item-galeria-protecao";
+  protecao.setAttribute("aria-hidden", "true");
+  botao.appendChild(protecao);
+
+  // Legenda (como já existia)
+  const legenda = document.createElement("span");
+  legenda.className = "item-galeria-legenda";
+  legenda.textContent = foto.legenda;
+  botao.appendChild(legenda);
+
+  // Data (se existir) — mantenha seu código atual aqui
+  if (foto.data) {
+    const dataEl = document.createElement("time");
+    dataEl.className = "item-galeria-data";
+    dataEl.dateTime = foto.data;
+    dataEl.textContent = formatarDataCurta(foto.data);
+    legenda.appendChild(document.createElement("br"));
+    legenda.appendChild(dataEl);
+  }
+
+  frag.appendChild(botao);
+});
 
     // Legenda
     const legenda = document.createElement("span");
@@ -866,15 +913,29 @@ function renderizarGaleria() {
     }
 
     frag.appendChild(botao);
-  });
+  }
 
   container.appendChild(frag);
 
-  container.addEventListener("click", function (ev) {
-    const botao = ev.target.closest(".item-galeria");
-    if (!botao) return;
-    abrirLightbox(parseInt(botao.getAttribute("data-indice"), 10), botao);
-  });
+  // Exibe ou oculta o botão "Carregar mais"
+  if (botaoCarregarMais) {
+    if (visiveis < totalFotos) {
+      botaoCarregarMais.hidden = false;
+    } else {
+      botaoCarregarMais.hidden = true;
+    }
+  }
+
+  // Remove listeners antigos e adiciona novo para o lightbox
+  container.removeEventListener("click", lidarCliqueGaleria);
+  container.addEventListener("click", lidarCliqueGaleria);
+}
+
+// Função auxiliar para o clique na galeria (lightbox)
+function lidarCliqueGaleria(ev) {
+  const botao = ev.target.closest(".item-galeria");
+  if (!botao) return;
+  abrirLightbox(parseInt(botao.getAttribute("data-indice"), 10), botao);
 }
 
 function abrirLightbox(indice, elementoOrigem) {
@@ -886,6 +947,14 @@ function abrirLightbox(indice, elementoOrigem) {
   imagem.alt = foto.legenda || "";
   $("#lightbox-legenda").textContent = foto.legenda || "";
   abrirModalGenerico($("#lightbox"));
+}
+
+const botaoGaleriaMais = $("#galeria-carregar-mais");
+if (botaoGaleriaMais) {
+  botaoGaleriaMais.addEventListener("click", function() {
+    estado.galeriaQuantidadeVisivel += 5; // incrementa de 5 em 5 (ou outro valor)
+    renderizarGaleria(); // re-renderiza
+  });
 }
 
 /* ======================================================================
