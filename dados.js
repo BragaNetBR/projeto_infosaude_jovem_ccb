@@ -725,7 +725,7 @@ const galeria = [
   },
   {
     arquivo: "img/galeria/foto-03.jpg",
-    legenda: "Estudantes reunidos na entrada da escola para o início do mapeamento territorial.",
+    legenda: "Reconhecimento do entorno escolar em frente ao 3º Grupamento de Bombeiros Militar.",
     categoria: "Pesquisa",
     data: "2026-06-19"
   },
@@ -737,7 +737,7 @@ const galeria = [
   },
   {
     arquivo: "img/galeria/foto-05.jpg",
-    legenda: "Reconhecimento do entorno escolar em frente ao 3º Grupamento de Bombeiros Militar.",
+    legenda: "Estudantes reunidos na entrada da escola para o início do mapeamento territorial.",
     categoria: "Pesquisa",
     data: "2026-06-19"
   },
