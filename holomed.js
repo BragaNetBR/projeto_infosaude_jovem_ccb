@@ -59,7 +59,7 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
   painel.id = "holomed-painel"; painel.hidden = true;
   painel.setAttribute("aria-label", "Assistente HoloMed");
   painel.innerHTML =
-    '<header id="holomed-topo"><strong>HoloMed</strong><span>Assistente de IA · Infosaúde Jovem CCB</span></header>' +
+    '<header id="holomed-topo"><strong>Jarvis</strong><span>Assistente de IA · Infosaúde Jovem CCB</span></header>' +
     '<div id="holomed-palco"></div>' +
     '<div id="holomed-expressoes" role="group" aria-label="Debug animações"></div>' +
     '<div id="holomed-chat" aria-live="polite"></div>' +
