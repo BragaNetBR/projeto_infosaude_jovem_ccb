@@ -1,99 +1,73 @@
-/* ===== HOLOMED — WIDGET DO ASSISTENTE 3D ===== */
+/* ===== HOLOMED — WIDGET 3D (THREE.JS, SEM GLB) ===== */
 #holomed-botao {
   position: fixed; right: 18px; bottom: 18px; z-index: 400;
-    width: 64px; height: 64px; border-radius: 50%;
-      border: 0; cursor: pointer;
-        background: var(--gradiente-botao); color: #fff;
-          box-shadow: var(--sombra-media);
-            display: flex; align-items: center; justify-content: center;
-              transition: transform var(--vel-rapida) ease, box-shadow var(--vel-rapida) ease;
-              }
-              #holomed-botao:hover { transform: translateY(-3px); box-shadow: var(--sombra-forte); }
-              #holomed-botao svg { width: 32px; height: 32px; animation: holomed-pulso 2.2s ease-in-out infinite; }
-              @keyframes holomed-pulso { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  width: 64px; height: 64px; border-radius: 50%;
+  border: 0; cursor: pointer;
+  background: var(--gradiente-botao); color: #fff;
+  box-shadow: var(--sombra-media);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform var(--vel-rapida) ease, box-shadow var(--vel-rapida) ease;
+}
+#holomed-botao:hover { transform: translateY(-3px); box-shadow: var(--sombra-forte); }
+#holomed-botao svg { width: 32px; height: 32px; animation: holomed-pulso 2.2s ease-in-out infinite; }
+@keyframes holomed-pulso { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-              #holomed-painel {
-                position: fixed; right: 18px; bottom: 94px; z-index: 400;
-                  width: min(92vw, 370px); height: min(78vh, 600px);
-                    display: flex; flex-direction: column; overflow: hidden;
-                      background: var(--cor-fundo-card);
-                        border: 1px solid var(--cor-borda);
-                          border-radius: var(--raio-medio);
-                            box-shadow: var(--sombra-forte);
-                            }
-                            #holomed-painel[hidden] { display: none; }
+#holomed-painel {
+  position: fixed; right: 18px; bottom: 94px; z-index: 400;
+  width: min(92vw, 370px); height: min(78vh, 600px);
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--cor-fundo-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-medio);
+  box-shadow: var(--sombra-forte);
+}
+#holomed-painel[hidden] { display: none; }
 
-                            #holomed-topo {
-                              display: flex; flex-direction: column;
-                                padding: 0.7rem 1rem;
-                                  background: var(--gradiente-botao); color: #fff;
-                                  }
-                                  #holomed-topo span { font-size: 0.75rem; opacity: 0.85; }
+#holomed-topo { display: flex; flex-direction: column; padding: 0.7rem 1rem; background: var(--gradiente-botao); color: #fff; }
+#holomed-topo span { font-size: 0.75rem; opacity: 0.85; }
 
-                                  #holomed-palco {
-                                    position: relative; height: 44%;
-                                      background: radial-gradient(circle at 50% 70%, rgba(30,127,191,0.25), rgba(14,26,36,0.95) 75%);
-                                      }
-                                      #holomed-palco model-viewer { width: 100%; height: 100%; --poster-color: transparent; }
-                                      #holomed-fallback {
-                                        width: 100%; height: 100%; object-fit: contain;
-                                          animation: holomed-flutua 4s ease-in-out infinite;
-                                            filter: drop-shadow(0 14px 26px rgba(79,195,247,0.35));
-                                            }
-                                            @keyframes holomed-flutua { 0%,100% { transform: translateY(5px); } 50% { transform: translateY(-9px); } }
-                                            #holomed-anel {
-                                              position: absolute; left: 50%; bottom: 6%;
-                                                width: 130px; height: 28px; border-radius: 50%;
-                                                  border: 3px solid rgba(255,183,77,0.85);
-                                                    box-shadow: 0 0 20px rgba(255,183,77,0.6);
-                                                      transform: translateX(-50%);
-                                                        animation: holomed-anel 2.6s ease-in-out infinite;
-                                                        }
-                                                        @keyframes holomed-anel {
-                                                          0%,100% { opacity: 0.45; transform: translateX(-50%) scale(0.9); }
-                                                            50% { opacity: 1; transform: translateX(-50%) scale(1.06); }
-                                                            }
+#holomed-palco {
+  position: relative; height: 44%;
+  background: radial-gradient(circle at 50% 70%, rgba(30,127,191,0.25), rgba(14,26,36,0.95) 75%);
+}
+#holomed-palco canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; }
+#holomed-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  animation: holomed-flutua 4s ease-in-out infinite;
+  filter: drop-shadow(0 14px 26px rgba(79,195,247,0.35));
+}
+#holomed-fallback svg { width: 62%; height: auto; }
+@keyframes holomed-flutua { 0%,100% { transform: translateY(5px); } 50% { transform: translateY(-9px); } }
 
-                                                            #holomed-expressoes {
-                                                              display: flex; flex-wrap: wrap; gap: 0.4rem;
-                                                                padding: 0.5rem 0.75rem;
-                                                                  background: var(--cor-fundo-alt);
-                                                                    border-bottom: 1px solid var(--cor-borda);
-                                                                    }
-                                                                    #holomed-expressoes:empty { display: none; }
-                                                                    #holomed-expressoes button {
-                                                                      border: 1px solid var(--cor-borda); background: #fff;
-                                                                        border-radius: 999px; padding: 0.25rem 0.7rem;
-                                                                          font-size: 0.74rem; font-weight: 700; cursor: pointer;
-                                                                          }
-                                                                          #holomed-expressoes button:hover { background: var(--cor-principal); color: #fff; border-color: var(--cor-principal); }
+#holomed-expressoes {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--cor-fundo-alt);
+  border-bottom: 1px solid var(--cor-borda);
+}
+#holomed-expressoes button {
+  border: 1px solid var(--cor-borda); background: #fff;
+  border-radius: 999px; padding: 0.25rem 0.7rem;
+  font-size: 0.74rem; font-weight: 700; cursor: pointer;
+}
+#holomed-expressoes button:hover { background: var(--cor-principal); color: #fff; border-color: var(--cor-principal); }
 
-                                                                          #holomed-chat {
-                                                                            flex: 1; overflow-y: auto;
-                                                                              display: flex; flex-direction: column; gap: 0.5rem;
-                                                                                padding: 0.75rem;
-                                                                                }
-                                                                                .holomed-msg {
-                                                                                  max-width: 88%; padding: 0.5rem 0.75rem;
-                                                                                    border-radius: 12px; font-size: 0.88rem; line-height: 1.45;
-                                                                                    }
-                                                                                    .holomed-msg.bot { background: var(--cor-fundo-alt); align-self: flex-start; }
-                                                                                    .holomed-msg.usuario { background: var(--cor-azul); color: #fff; align-self: flex-end; }
+#holomed-chat { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding: 0.75rem; }
+.holomed-msg { max-width: 88%; padding: 0.5rem 0.75rem; border-radius: 12px; font-size: 0.88rem; line-height: 1.45; }
+.holomed-msg.bot { background: var(--cor-fundo-alt); align-self: flex-start; }
+.holomed-msg.usuario { background: var(--cor-azul); color: #fff; align-self: flex-end; }
 
-                                                                                    #holomed-form { display: flex; gap: 0.4rem; padding: 0.6rem; border-top: 1px solid var(--cor-borda); }
-                                                                                    #holomed-form input {
-                                                                                      flex: 1; min-width: 0;
-                                                                                        border: 1px solid var(--cor-borda); border-radius: 10px;
-                                                                                          padding: 0.55rem 0.8rem; font-size: 0.95rem;
-                                                                                            background: var(--cor-fundo-card); color: var(--cor-texto-principal);
-                                                                                            }
-                                                                                            #holomed-form input:focus { border-color: var(--cor-principal); outline: 2px solid var(--cor-azul); }
-                                                                                            #holomed-form button {
-                                                                                              border: 0; border-radius: 10px; padding: 0 1rem;
-                                                                                                background: var(--gradiente-botao); color: #fff;
-                                                                                                  font-weight: 700; cursor: pointer;
-                                                                                                  }
+#holomed-form { display: flex; gap: 0.4rem; padding: 0.6rem; border-top: 1px solid var(--cor-borda); }
+#holomed-form input {
+  flex: 1; min-width: 0;
+  border: 1px solid var(--cor-borda); border-radius: 10px;
+  padding: 0.55rem 0.8rem; font-size: 0.95rem;
+  background: var(--cor-fundo-card); color: var(--cor-texto-principal);
+}
+#holomed-form input:focus { border-color: var(--cor-principal); outline: 2px solid var(--cor-azul); }
+#holomed-form button { border: 0; border-radius: 10px; padding: 0 1rem; background: var(--gradiente-botao); color: #fff; font-weight: 700; cursor: pointer; }
 
-                                                                                                  @media (prefers-reduced-motion: reduce) {
-                                                                                                    #holomed-botao svg, #holomed-fallback, #holomed-anel { animation: none; }
-                                                                                                    }
+@media (prefers-reduced-motion: reduce) {
+  #holomed-botao svg, #holomed-fallback { animation: none; }
+}
