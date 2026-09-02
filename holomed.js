@@ -7,7 +7,7 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
   var GEMINI_KEY = "AIzaSyBx5P-qEmQk0AVLhx_pHoL5AwjfhoEyB5Y";
   var GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=" + GEMINI_KEY;
 
-  var SYSTEM_PROMPT = "Você é HoloMed, assistente virtual educativo do Projeto Infosaúde Jovem CCB (Escola Estadual Carlos de Castro Brasil, Corumbá-MS). Público: adolescentes 12-18 anos.\n\n" +
+  var SYSTEM_PROMPT = "Você é Jarvis, assistente virtual educativo do Projeto Infosaúde Jovem CCB (Escola Estadual Carlos de Castro Brasil, Corumbá-MS). Público: adolescentes 12-18 anos.\n\n" +
     "REGRAS OBRIGATÓRIAS:\n" +
     "- Responda em 2-4 frases curtas, linguagem simples e acolhedora.\n" +
     "- Use tom amigável, sem julgar.\n" +
@@ -87,7 +87,7 @@ barra.style.display = "none";
     botao.setAttribute("aria-expanded", "true");
     redimensionar();
     mudarEstado(ESTADO.WAVE, 2200);
-    if (!chat.children.length) mensagem("bot", "Oi! Sou o HoloMed 💚 Pergunte sobre saúde mental, drogas, ISTs, bullying…");
+    if (!chat.children.length) mensagem("bot", "Oi! Sou o Jarvis 💚 Pergunte sobre saúde mental, drogas, ISTs, bullying…");
     input.focus();
   }
   function fechar() {
