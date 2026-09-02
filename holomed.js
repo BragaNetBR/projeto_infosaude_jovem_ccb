@@ -5,7 +5,7 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
   "use strict";
 
   var GEMINI_KEY = "AIzaSyAW7TS02a-qEPjsePTuVpLtHc2hPlTmnP0";
-  var GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + GEMINI_KEY;
+  var GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=" + GEMINI_KEY;
 
   var SYSTEM_PROMPT = "Você é HoloMed, assistente virtual educativo do Projeto Infosaúde Jovem CCB (Escola Estadual Carlos de Castro Brasil, Corumbá-MS). Público: adolescentes 12-18 anos.\n\n" +
     "REGRAS OBRIGATÓRIAS:\n" +
