@@ -812,6 +812,18 @@ const galeria = [
     legenda: "Equipe do projeto reunida na unidade básica de saúde após a visita técnica.",
     categoria: "Ação com UBS",
     data: "2026-08-20"
+  },
+  {
+    arquivo: "img/galeria/foto-18.jpg",
+    legenda: "EXPOTEC 2026",
+    categoria: "Oficina",
+    data: "2026-08-28"
+  },
+  {
+    arquivo: "img/galeria/foto-19.jpg",
+    legenda: "EXPOTEC 2026",
+    categoria: "Oficina",
+    data: "2026-08-28"
   }
 ];
 
