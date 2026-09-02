@@ -73,6 +73,8 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
   var input = painel.querySelector("#holomed-input");
   var barra = painel.querySelector("#holomed-expressoes");
 
+barra.style.display = "none";
+
   Object.keys(ESTADO).forEach(function (k) {
     var b = document.createElement("button");
     b.type = "button"; b.textContent = ESTADO[k];
