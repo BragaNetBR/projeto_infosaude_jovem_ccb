@@ -1,5 +1,8 @@
 /* =====================================================================
-HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
+HOLOMED — THREE.JS + GEMINI API (Projeto Infosaúde Jovem CCB)
+v2 — modelo procedural aprimorado + animações automáticas por estado
+Debug: acrescente ?holomed-debug=1 na URL, ou
+       localStorage.setItem("holomedDebug","1")
 ===================================================================== */
 (function () {
   "use strict";
@@ -21,34 +24,34 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
 
   var reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* --- Máquina de estados --- */
-  var ESTADO = { IDLE: "Idle", THINKING: "Thinking", TALKING: "Talk", JOY: "Joy", EMPATHY: "Empathy", WAVE: "Wave", SURPRISE: "Surprise" };
-  var estadoAtual = ESTADO.IDLE;
-  var estadoAnterior = ESTADO.IDLE;
-  var tempoNoEstado = 0;
-  var proximoPiscar = 2 + Math.random() * 3;
-  var piscando = 0; // 0 = aberto, 0..1 = fechando
-  var olharAlvo = { x: 0, y: 0 };
-  var olharAtual = { x: 0, y: 0 };
-  var variacaoPose = Math.random() * 100; // semente pra variar poses
+  var DEBUG = (function () {
+    try {
+      return /[?&]holomed-debug\b/i.test(location.search) ||
+        window.localStorage.getItem("holomedDebug") === "1";
+    } catch (e) { return false; }
+  })();
 
-  function mudarEstado(novo, duracaoMs) {
-    if (novo === estadoAtual && !duracaoMs) return;
-    estadoAnterior = estadoAtual;
-    estadoAtual = novo;
-    tempoNoEstado = 0;
-    variacaoPose = Math.random() * 100;
-    if (duracaoMs) {
-      setTimeout(function () {
-        if (estadoAtual === novo) {
-          estadoAtual = ESTADO.IDLE;
-          variacaoPose = Math.random() * 100;
-        }
-      }, duracaoMs);
-    }
+  /* PRNG determinístico (mulberry32) — ruído procedural reproduzível */
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
   }
+  var rng = mulberry32(20771);
 
-  /* --- UI --- */
+  var DICAS = [
+    "Beber água e dormir 8–9 horas por noite já melhora o humor e a concentração. 💧",
+    "Se estiver passando por um momento difícil, o CVV liga 188 — 24h, gratuito e sigiloso. 💚",
+    "Movimentar o corpo 30 minutos por dia (até uma caminhada) já conta como exercício. 🏃",
+    "Ninguém precisa aguentar bullying sozinho — conte para um adulto de confiança. 🤝",
+    "Perguntar sobre saúde não é vergonha: dúvida esclarecida é proteção. ✨"
+  ];
+  var dicaIdx = 0;
+
+  /* ---------- DOM ---------- */
   var botao = document.createElement("button");
   botao.id = "holomed-botao"; botao.type = "button";
   botao.setAttribute("aria-label", "Abrir assistente HoloMed");
@@ -61,7 +64,7 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
   painel.innerHTML =
     '<header id="holomed-topo"><strong>HoloMed</strong><span>Assistente de IA · Infosaúde Jovem CCB</span></header>' +
     '<div id="holomed-palco"></div>' +
-    '<div id="holomed-expressoes" role="group" aria-label="Debug animações"></div>' +
+    '<div id="holomed-expressoes" role="group" aria-label="Animações do HoloMed"></div>' +
     '<div id="holomed-chat" aria-live="polite"></div>' +
     '<form id="holomed-form"><input id="holomed-input" type="search" placeholder="Pergunte sobre saúde…" autocomplete="off" aria-label="Pergunta"><button type="submit">Enviar</button></form>';
 
@@ -73,20 +76,46 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
   var input = painel.querySelector("#holomed-input");
   var barra = painel.querySelector("#holomed-expressoes");
 
-barra.style.display = "none";
+  /* ---------- Diretor de animação (estado dirigido por eventos) ---------- */
+  var simT = 0;                        // tempo de simulação (pausa quando o painel fecha)
+  var anim = { atual: "Idle", fim: 0, fila: [] };
+  var atento = false;                  // usuário digitando → robô "escuta"
 
-  Object.keys(ESTADO).forEach(function (k) {
-    var b = document.createElement("button");
-    b.type = "button"; b.textContent = ESTADO[k];
-    b.addEventListener("click", function () { mudarEstado(ESTADO[k], 3000); });
-    barra.appendChild(b);
-  });
+  function tocar(nome, ms) {
+    anim.fila.length = 0;
+    anim.atual = nome;
+    anim.fim = simT + (ms == null ? 2600 : ms);
+  }
+  function sequencia(passos) {         // [["Joy",1700],["Talk",60000], ...]
+    anim.fila = passos.slice();
+    avancar();
+  }
+  function avancar() {
+    var p = anim.fila.shift();
+    if (p) { anim.atual = p[0]; anim.fim = simT + p[1]; }
+    else { anim.atual = "Idle"; anim.fim = 0; }
+  }
 
+  /* Botões de expressão: ocultos por padrão (só debug) */
+  if (DEBUG) {
+    ["Idle", "Wave", "Talk", "Empathy", "Thinking", "Joy", "Surprise"].forEach(function (n) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = n;
+      b.addEventListener("click", function () { tocar(n, 4000); });
+      barra.appendChild(b);
+    });
+    barra.hidden = false;
+  } else {
+    barra.hidden = true;
+    barra.style.display = "none";
+  }
+
+  /* ---------- Painel ---------- */
   function abrir() {
     painel.hidden = false;
     botao.setAttribute("aria-expanded", "true");
     redimensionar();
-    mudarEstado(ESTADO.WAVE, 2200);
+    sequencia([["Wave", 2100]]);
     if (!chat.children.length) mensagem("bot", "Oi! Sou o HoloMed 💚 Pergunte sobre saúde mental, drogas, ISTs, bullying…");
     input.focus();
   }
@@ -98,6 +127,10 @@ barra.style.display = "none";
   botao.addEventListener("click", function () { painel.hidden ? abrir() : fechar(); });
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !painel.hidden) fechar(); });
 
+  input.addEventListener("focus", function () { atento = true; });
+  input.addEventListener("blur", function () { atento = false; });
+
+  /* ---------- Chat ---------- */
   function mensagem(quem, texto) {
     var div = document.createElement("div");
     div.className = "holomed-msg " + quem;
@@ -105,6 +138,28 @@ barra.style.display = "none";
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
     return div;
+  }
+
+  var digitandoAtual = null;
+  function digitar(el, texto) {          // efeito máquina + fala sincronizada
+    if (digitandoAtual) {
+      digitandoAtual.parar = true;
+      digitandoAtual.el.textContent = digitandoAtual.completo;
+    }
+    var est = { parar: false, el: el, completo: texto };
+    digitandoAtual = est;
+    var i = 0;
+    (function passo() {
+      if (est.parar) return;
+      i = Math.min(texto.length, i + 1 + Math.floor(Math.random() * 2));
+      el.textContent = texto.slice(0, i);
+      chat.scrollTop = chat.scrollHeight;
+      if (i < texto.length) setTimeout(passo, 24);
+      else finalizarFala();
+    })();
+  }
+  function finalizarFala() {
+    if (anim.atual === "Talk") tocar("Idle", 0);
   }
 
   function buscarLocal(texto) {
@@ -121,8 +176,6 @@ barra.style.display = "none";
   }
 
   async function perguntarGemini(pergunta) {
-    var ctrl = new AbortController();
-    var t = setTimeout(function () { ctrl.abort(); }, 12000);
     try {
       var corpo = {
         systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
@@ -131,17 +184,36 @@ barra.style.display = "none";
       var r = await fetch(GEMINI_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(corpo),
-        signal: ctrl.signal
+        body: JSON.stringify(corpo)
       });
-      clearTimeout(t);
-      if (!r.ok) return null;
+      if (!r.ok) throw new Error("HTTP " + r.status);
       var d = await r.json();
-      return (d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts && d.candidates[0].content.parts[0].text) || null;
+      return (d.candidates && d.candidates[0] && d.candidates[0].content.parts[0].text) || null;
     } catch (e) {
-      clearTimeout(t);
+      console.warn("Gemini falhou:", e);
       return null;
     }
+  }
+
+  /* Heurística de sentimento (aproximação) → escolhe a reação automática */
+  function sentimento(txt) {
+    var t = " " + txt.toLowerCase() + " ";
+    if (/(188|cvv|crise|suic[íi]dio|viol[êe]ncia|disque 100|abuso|emerg[êe]ncia|samu|192|perigo|risco|triste|sozinh)/.test(t)) return "Empathy";
+    if (/(uau|uow|wow|incr[íi]vel|impressionante|cuidado|aten[çc][ãa]o|nunca fa[çc]a|!!|❗|⚠)/.test(t)) return "Surprise";
+    if (/(parab[ée]ns|orgulho|voc[êe] consegue|consegue|melhor|legal|adorei|[óo]tim[oa]|excelente|maravilhoso|vale a pena|💚|✨)/.test(t)) return "Joy";
+    return "Talk";
+  }
+
+  function responder(el, texto) {
+    var reacao = sentimento(texto);
+    if (reduzido) {                       // sem animação de digitação
+      el.textContent = texto;
+      tocar(reacao === "Talk" ? "Talk" : reacao, 2500);
+      return;
+    }
+    if (reacao !== "Talk") sequencia([[reacao, 1700], ["Talk", 600000]]);
+    else tocar("Talk", 600000);           // "Talk" termina quando o texto acaba
+    digitar(el, texto);
   }
 
   form.addEventListener("submit", async function (ev) {
@@ -150,41 +222,30 @@ barra.style.display = "none";
     if (!texto) return;
     mensagem("usuario", texto);
     input.value = "";
-
-    /* --- Pensando --- */
-    mudarEstado(ESTADO.THINKING);
+    tocar("Thinking", Infinity);          // pensa até a resposta chegar
     var loading = mensagem("bot", "Pensando…");
+    var pontos = setInterval(function () {
+      if (loading.textContent.indexOf("Pensando") === 0) {
+        loading.textContent = "Pensando" + ".".repeat(1 + (Math.floor(Date.now() / 400) % 3));
+      }
+    }, 400);
 
     var local = buscarLocal(texto);
     if (local) {
-      /* Surpresa leve ao encontrar rápido, depois falar */
-      mudarEstado(ESTADO.SURPRISE, 600);
-      setTimeout(function () { mudarEstado(ESTADO.TALKING, 4000); }, 600);
-      loading.textContent = local.resposta + " (Tema: " + local.tema + ")";
-      /* Após falar, alegria breve */
-      setTimeout(function () { mudarEstado(ESTADO.JOY, 1800); }, 4600);
+      clearInterval(pontos);
+      responder(loading, local.resposta + " (Tema: " + local.tema + ")");
       return;
     }
 
     var ia = await perguntarGemini(texto);
+    clearInterval(pontos);
     if (ia) {
-      mudarEstado(ESTADO.TALKING, Math.min(5000, ia.length * 40));
-      loading.textContent = ia;
-      setTimeout(function () { mudarEstado(ESTADO.JOY, 1500); }, Math.min(5000, ia.length * 40));
+      responder(loading, ia);
     } else {
-      mudarEstado(ESTADO.EMPATHY, 3500);
-      loading.textContent = "Não consegui responder agora. Tente de novo em instantes ou procure a UBS. " + (window.textos && textos.avisoEducativo ? textos.avisoEducativo : "");
+      loading.textContent = "Não consegui responder agora. Tente de novo em instantes ou procure a UBS. " +
+        (typeof textos !== "undefined" && textos && textos.avisoEducativo ? textos.avisoEducativo : "");
+      sequencia([["Empathy", 2600]]);
     }
-  });
-
-  /* --- Olhar segue o mouse dentro do palco --- */
-  palco.addEventListener("pointermove", function (e) {
-    var rect = palco.getBoundingClientRect();
-    olharAlvo.x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    olharAlvo.y = ((e.clientY - rect.top) / rect.height - 0.5) * -2;
-  });
-  palco.addEventListener("pointerleave", function () {
-    olharAlvo.x = 0; olharAlvo.y = 0;
   });
 
   if (window.THREE) iniciar3D(); else fallback2D();
@@ -194,387 +255,416 @@ barra.style.display = "none";
   }
 
   var redimensionar = function () {};
+
+  /* =====================================================================
+  MODELO 3D PROCEDURAL — blockout → estrutura → forma → material → luz
+  ===================================================================== */
   function iniciar3D() {
     var T = window.THREE;
     var renderer = new T.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    if ("outputColorSpace" in renderer && T.SRGBColorSpace) renderer.outputColorSpace = T.SRGBColorSpace;
+    else if (T.sRGBEncoding !== undefined) { try { renderer.outputEncoding = T.sRGBEncoding; } catch (e) {} }
+    if (T.ACESFilmicToneMapping !== undefined) {
+      renderer.toneMapping = T.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.12;
+    }
+    if (T.PCFSoftShadowMap !== undefined) renderer.shadowMap.type = T.PCFSoftShadowMap;
+    renderer.shadowMap.enabled = true;
+    renderer.domElement.style.touchAction = "none";
+    renderer.domElement.style.cursor = "grab";
     palco.appendChild(renderer.domElement);
 
     var cena = new T.Scene();
-    cena.fog = new T.FogExp2(0x0e1a24, 0.08);
-    var camera = new T.PerspectiveCamera(36, 1, 0.1, 50);
-    camera.position.set(0, 0.4, 5.2); camera.lookAt(0, 0.1, 0);
+    var camera = new T.PerspectiveCamera(38, 1, 0.1, 60);
+    camera.position.set(0, 0.34, 4.9);
+    camera.lookAt(0, 0.09, 0);
 
-    cena.add(new T.AmbientLight(0x4fc3f7, 0.6));
-    var dir = new T.DirectionalLight(0xffffff, 1.0); dir.position.set(3, 5, 4); cena.add(dir);
-    var ptAzul = new T.PointLight(0x4fc3f7, 1.2, 6); ptAzul.position.set(-2, 1, 3); cena.add(ptAzul);
-    var ptVerde = new T.PointLight(0x66bb6a, 0.8, 6); ptVerde.position.set(2, 0.5, 2); cena.add(ptVerde);
-    var rim = new T.PointLight(0xffb74d, 0.6, 5); rim.position.set(0, -1, 4); cena.add(rim);
+    /* luz: key com sombra + rim ciano + fill */
+    cena.add(new T.AmbientLight(0xffffff, 0.75));
+    cena.add(new T.HemisphereLight(0xdff3ff, 0x2b3440, 0.55));
+    var dir = new T.DirectionalLight(0xffffff, 1.0);
+    dir.position.set(2.5, 4, 3.5);
+    dir.castShadow = true;
+    if (dir.shadow.mapSize) dir.shadow.mapSize.set(512, 512);
+    dir.shadow.camera.left = -2.4; dir.shadow.camera.right = 2.4;
+    dir.shadow.camera.top = 2.6; dir.shadow.camera.bottom = -2.4;
+    dir.shadow.camera.near = 1; dir.shadow.camera.far = 12;
+    dir.shadow.bias = -0.0004;
+    dir.shadow.camera.updateProjectionMatrix();
+    cena.add(dir);
+    var rim = new T.DirectionalLight(0x5fd4ff, 0.55);
+    rim.position.set(-2.5, 1.6, -3.2); cena.add(rim);
+    var pt = new T.PointLight(0x4fc3f7, 0.5);
+    pt.position.set(0, 0.6, 2.4); cena.add(pt);
 
-    var matBranco = new T.MeshPhysicalMaterial({ color: 0xf4f7fa, roughness: 0.2, metalness: 0.1, clearcoat: 0.5, clearcoatRoughness: 0.2 });
-    var matHolo = new T.MeshPhysicalMaterial({ color: 0x4fc3f7, roughness: 0.1, metalness: 0.2, transparent: true, opacity: 0.45, transmission: 0.3, emissive: 0x4fc3f7, emissiveIntensity: 0.15 });
-    var matHoloInterno = new T.MeshBasicMaterial({ color: 0x4fc3f7, transparent: true, opacity: 0.15 });
-    var matLaranja = new T.MeshStandardMaterial({ color: 0xffb74d, emissive: 0xffb74d, emissiveIntensity: 0.8, roughness: 0.3 });
-    var matMao = new T.MeshStandardMaterial({ color: 0xf4f7fa, roughness: 0.4 });
-    var matCircuito = new T.MeshBasicMaterial({ color: 0x7ff3ff, transparent: true, opacity: 0.6 });
+    var chao = new T.Mesh(new T.PlaneGeometry(7, 7), new T.ShadowMaterial({ opacity: 0.22 }));
+    chao.rotation.x = -Math.PI / 2; chao.position.y = -1.5;
+    chao.receiveShadow = true; cena.add(chao);
+
+    /* materiais */
+    var matCasco = new T.MeshPhysicalMaterial({ color: 0xf5f8fb, roughness: 0.3, metalness: 0.04, clearcoat: 0.55, clearcoatRoughness: 0.3 });
+    var matVisor = new T.MeshPhysicalMaterial({ color: 0x06141f, roughness: 0.14, metalness: 0.25, clearcoat: 1, clearcoatRoughness: 0.08 });
+    var matHolo = new T.MeshPhysicalMaterial({ color: 0x9adcf0, transparent: true, opacity: 0.5, roughness: 0.2, metalness: 0, emissive: 0x12454f, emissiveIntensity: 0.4, depthWrite: false });
+    var matNucleo = new T.MeshStandardMaterial({ color: 0x11242e, roughness: 0.45, metalness: 0.6 });
+    var matLaranja = new T.MeshStandardMaterial({ color: 0xffb74d, roughness: 0.38, metalness: 0.05, emissive: 0xff9800, emissiveIntensity: 0.45 });
+    var matMao = new T.MeshStandardMaterial({ color: 0x5c6d79, roughness: 0.45, metalness: 0.15 });
+    var matAural = new T.MeshBasicMaterial({ color: 0x7ff3ff });
 
     var robo = new T.Group(); cena.add(robo);
 
+    /* --- cabeça: casca branca + visor curvo + tela --- */
     var cabeca = new T.Group(); cabeca.position.y = 1.15; robo.add(cabeca);
-    var cranio = new T.Mesh(new T.SphereGeometry(0.58, 64, 64), matBranco);
-    cranio.scale.set(1, 0.95, 0.92); cabeca.add(cranio);
+    var casca = new T.Group(); casca.scale.set(1, 0.92, 0.95); cabeca.add(casca);
+
+    var cranio = new T.Mesh(new T.SphereGeometry(0.52, 48, 32), matCasco);
+    cranio.castShadow = true; casca.add(cranio);
+
+    var PHI_C = Math.PI / 2, PHI_L = 1.8, TH_L = 1.3;   // visor frontal centrado em +Z
+    var cascoVisor = new T.Mesh(
+      new T.SphereGeometry(0.535, 48, 24, PHI_C - PHI_L / 2, PHI_L, Math.PI / 2 - TH_L / 2, TH_L),
+      matVisor
+    );
+    casca.add(cascoVisor);
 
     var rostoCv = document.createElement("canvas");
-    rostoCv.width = 512; rostoCv.height = 352;
+    rostoCv.width = 256; rostoCv.height = 184;
     var rctx = rostoCv.getContext("2d");
     var rostoTex = new T.CanvasTexture(rostoCv);
-    rostoTex.minFilter = T.LinearFilter; rostoTex.magFilter = T.LinearFilter;
+    if (rostoTex.colorSpace !== undefined && T.SRGBColorSpace) rostoTex.colorSpace = T.SRGBColorSpace;
+    var tela = new T.Mesh(
+      new T.SphereGeometry(0.545, 48, 24, PHI_C - PHI_L / 2, PHI_L, Math.PI / 2 - TH_L / 2, TH_L),
+      new T.MeshBasicMaterial({ map: rostoTex, transparent: true, depthWrite: false })
+    );
+    casca.add(tela);
 
-    var visor = new T.Mesh(new T.PlaneGeometry(0.92, 0.62), new T.MeshBasicMaterial({ map: rostoTex, transparent: true }));
-    visor.position.set(0, 0.03, 0.52); cabeca.add(visor);
-    var visorGlow = new T.Mesh(new T.PlaneGeometry(1.0, 0.7), new T.MeshBasicMaterial({ color: 0x4fc3f7, transparent: true, opacity: 0.15 }));
-    visorGlow.position.set(0, 0.03, 0.51); cabeca.add(visorGlow);
-
-    [-0.58, 0.58].forEach(function (x) {
-      var orelha = new T.Mesh(new T.CylinderGeometry(0.14, 0.14, 0.06, 32), matLaranja);
-      orelha.rotation.z = Math.PI / 2; orelha.position.set(x, 0, 0); cabeca.add(orelha);
+    /* orelhas com núcleo luminoso */
+    [-1, 1].forEach(function (lado) {
+      var ore = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.09, 24), matLaranja);
+      ore.rotation.z = Math.PI / 2; ore.position.set(lado * 0.55, 0, 0);
+      ore.castShadow = true; cabeca.add(ore);
+      var nuc = new T.Mesh(new T.CylinderGeometry(0.055, 0.055, 0.02, 20), matAural);
+      nuc.rotation.z = Math.PI / 2; nuc.position.set(lado * 0.6, 0, 0);
+      cabeca.add(nuc);
     });
 
-    var torso = new T.Mesh(new T.CapsuleGeometry(0.44, 0.5, 16, 32), matHolo);
-    torso.position.y = 0.15; robo.add(torso);
-    var torsoInterno = new T.Mesh(new T.CapsuleGeometry(0.38, 0.45, 12, 24), matHoloInterno);
-    torsoInterno.position.y = 0.15; robo.add(torsoInterno);
+    var pescoco = new T.Mesh(new T.CylinderGeometry(0.1, 0.11, 0.16, 20), matNucleo);
+    pescoco.position.set(0, 0.64, 0); robo.add(pescoco);
 
-    var circuitos = new T.Group(); circuitos.position.y = 0.15; robo.add(circuitos);
-    for (var i = 0; i < 6; i++) {
-      var linha = new T.Mesh(new T.BoxGeometry(0.6, 0.012, 0.012), matCircuito);
-      linha.position.y = (i - 2.5) * 0.15; linha.position.z = 0.44; circuitos.add(linha);
-    }
-    for (var j = 0; j < 4; j++) {
-      var linhaV = new T.Mesh(new T.BoxGeometry(0.012, 0.8, 0.012), matCircuito);
-      linhaV.position.x = (j - 1.5) * 0.18; linhaV.position.z = 0.44; circuitos.add(linhaV);
-    }
+    /* --- tronco holográfico com endoesqueleto interno --- */
+    var torso = new T.Mesh(new T.CapsuleGeometry(0.4, 0.4, 8, 24), matHolo);
+    torso.position.y = 0.02; robo.add(torso);
+    var nucleo = new T.Mesh(new T.CapsuleGeometry(0.1, 0.52, 6, 16), matNucleo);
+    nucleo.position.y = 0.02; robo.add(nucleo);
 
-    var coracaoGrupo = new T.Group(); coracaoGrupo.position.set(0, 0.3, 0.42); robo.add(coracaoGrupo);
     var fc = new T.Shape();
-    fc.moveTo(0, -0.18); fc.bezierCurveTo(0.2, 0.02, 0.18, 0.22, 0, 0.1);
-    fc.bezierCurveTo(-0.18, 0.22, -0.2, 0.02, 0, -0.18);
-    var coracao = new T.Mesh(new T.ShapeGeometry(fc), new T.MeshBasicMaterial({ color: 0x66bb6a }));
-    coracaoGrupo.add(coracao);
-    var coracaoGlow = new T.Mesh(new T.CircleGeometry(0.14, 32), new T.MeshBasicMaterial({ color: 0x66bb6a, transparent: true, opacity: 0.4 }));
-    coracaoGlow.position.z = -0.01; coracaoGrupo.add(coracaoGlow);
+    fc.moveTo(0, -0.24);
+    fc.bezierCurveTo(0.26, 0.02, 0.23, 0.3, 0, 0.15);
+    fc.bezierCurveTo(-0.23, 0.3, -0.26, 0.02, 0, -0.24);
+    var coracao = new T.Mesh(new T.ShapeGeometry(fc), new T.MeshBasicMaterial({ color: 0x7cfc9a, side: T.DoubleSide }));
+    coracao.position.set(0, 0.24, 0.27); robo.add(coracao);
 
-    var quadril = new T.Mesh(new T.SphereGeometry(0.28, 32, 32), matBranco);
-    quadril.scale.set(1.1, 0.6, 0.85); quadril.position.y = -0.42; robo.add(quadril);
-    var cauda = new T.Mesh(new T.ConeGeometry(0.22, 0.55, 32), matHolo);
-    cauda.position.y = -0.85; cauda.rotation.x = Math.PI; robo.add(cauda);
-    var caudaPonta = new T.Mesh(new T.SphereGeometry(0.1, 20, 20), matLaranja);
-    caudaPonta.position.y = -1.12; robo.add(caudaPonta);
+    /* textura de brilho (sprite radial) reutilizável */
+    var brilhoCv = document.createElement("canvas");
+    brilhoCv.width = brilhoCv.height = 64;
+    var bctx = brilhoCv.getContext("2d");
+    var grad = bctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grad.addColorStop(0, "rgba(255,255,255,1)");
+    grad.addColorStop(0.3, "rgba(255,255,255,0.5)");
+    grad.addColorStop(1, "rgba(255,255,255,0)");
+    bctx.fillStyle = grad; bctx.fillRect(0, 0, 64, 64);
+    var texBrilho = new T.CanvasTexture(brilhoCv);
 
-    function braco(x) {
-      var g = new T.Group(); g.position.set(x, 0.5, 0);
-      g.add(new T.Mesh(new T.SphereGeometry(0.1, 20, 20), matLaranja));
-      var superBraco = new T.Mesh(new T.CapsuleGeometry(0.07, 0.25, 6, 16), matHolo);
-      superBraco.position.y = -0.18; g.add(superBraco);
-      var cotovelo = new T.Mesh(new T.SphereGeometry(0.08, 16, 16), matLaranja);
-      cotovelo.position.y = -0.35; g.add(cotovelo);
-      var antebraco = new T.Mesh(new T.CapsuleGeometry(0.06, 0.25, 6, 16), matHolo);
-      antebraco.position.y = -0.52; g.add(antebraco);
-      var mao = new T.Mesh(new T.SphereGeometry(0.09, 20, 20), matMao);
-      mao.position.y = -0.72; g.add(mao);
-      robo.add(g); return { grupo: g, antebraco: antebraco };
+    var brilhoCoracao = new T.Sprite(new T.SpriteMaterial({ map: texBrilho, color: 0x7cfc9a, transparent: true, opacity: 0.55, blending: T.AdditiveBlending, depthWrite: false }));
+    brilhoCoracao.scale.set(0.55, 0.55, 1);
+    brilhoCoracao.position.copy(coracao.position);
+    robo.add(brilhoCoracao);
+
+    /* --- base flutuante: quadril, cauda, anel de propulsão, jato --- */
+    var quadril = new T.Mesh(new T.SphereGeometry(0.28, 32, 24), matCasco);
+    quadril.scale.set(1.12, 0.62, 0.92); quadril.position.y = -0.58;
+    quadril.castShadow = true; robo.add(quadril);
+    var cauda = new T.Mesh(new T.SphereGeometry(0.22, 32, 24), matHolo);
+    cauda.scale.set(1, 1.55, 1); cauda.position.y = -0.88; robo.add(cauda);
+    var anel = new T.Mesh(new T.TorusGeometry(0.66, 0.026, 12, 64), new T.MeshBasicMaterial({ color: 0xffb74d, transparent: true, opacity: 0.85 }));
+    anel.rotation.x = Math.PI / 2; anel.position.y = -1.28; robo.add(anel);
+    var motor = new T.Sprite(new T.SpriteMaterial({ map: texBrilho, color: 0xffb74d, transparent: true, opacity: 0.5, blending: T.AdditiveBlending, depthWrite: false }));
+    motor.scale.set(0.85, 0.85, 1); motor.position.set(0, -1.36, 0); robo.add(motor);
+
+    /* --- braços: ombro + cotovelo + mão com polegar --- */
+    function braco(lado) { // -1 esquerda | +1 direita
+      var ombro = new T.Group();
+      ombro.position.set(lado * 0.5, 0.42, 0);
+      var esferaOmbro = new T.Mesh(new T.SphereGeometry(0.115, 20, 16), matLaranja);
+      esferaOmbro.castShadow = true; ombro.add(esferaOmbro);
+
+      var superior = new T.Group(); ombro.add(superior);
+      var segSup = new T.Mesh(new T.CapsuleGeometry(0.08, 0.24, 4, 12), matHolo);
+      segSup.position.y = -0.15; superior.add(segSup);
+
+      var cotovelo = new T.Group(); cotovelo.position.y = -0.32; superior.add(cotovelo);
+      cotovelo.add(new T.Mesh(new T.SphereGeometry(0.085, 20, 16), matHolo));
+      var segAnt = new T.Mesh(new T.CapsuleGeometry(0.07, 0.2, 4, 12), matHolo);
+      segAnt.position.y = -0.13; cotovelo.add(segAnt);
+
+      var mao = new T.Group(); mao.position.y = -0.3; cotovelo.add(mao);
+      var palma = new T.Mesh(new T.SphereGeometry(0.095, 20, 16), matMao);
+      palma.scale.set(0.95, 1.1, 0.8); palma.castShadow = true; mao.add(palma);
+      var polegar = new T.Mesh(new T.CapsuleGeometry(0.035, 0.05, 3, 8), matMao);
+      polegar.position.set(-lado * 0.08, -0.02, 0.03);
+      polegar.rotation.z = -lado * 0.7;
+      mao.add(polegar);
+
+      robo.add(ombro);
+      return { raiz: ombro, cot: cotovelo, mao: mao };
     }
-    var bracoE = braco(-0.52), bracoD = braco(0.52);
+    var bracoE = braco(-1), bracoD = braco(1);
 
-    var anel = new T.Mesh(new T.TorusGeometry(0.85, 0.04, 16, 80), new T.MeshBasicMaterial({ color: 0xffb74d }));
-    anel.rotation.x = Math.PI / 2; anel.position.y = -1.45; cena.add(anel);
-    var anelGlow = new T.Mesh(new T.RingGeometry(0.75, 1.05, 64), new T.MeshBasicMaterial({ color: 0xffb74d, transparent: true, opacity: 0.2, side: T.DoubleSide }));
-    anelGlow.rotation.x = -Math.PI / 2; anelGlow.position.y = -1.45; cena.add(anelGlow);
-
-    var particulasGeo = new T.BufferGeometry();
-    var pCount = 120;
-    var posicoes = new Float32Array(pCount * 3);
-    for (var p = 0; p < pCount; p++) {
-      var angulo = Math.random() * Math.PI * 2;
-      var raio = 1.2 + Math.random() * 0.8;
-      posicoes[p * 3] = Math.cos(angulo) * raio;
-      posicoes[p * 3 + 1] = (Math.random() - 0.5) * 3;
-      posicoes[p * 3 + 2] = Math.sin(angulo) * raio;
+    /* partículas de energia (posições determinísticas) */
+    var nPart = 42, posArr = new Float32Array(nPart * 3);
+    for (var i = 0; i < nPart; i++) {
+      var ang = rng() * Math.PI * 2;
+      var raioP = 1.05 + rng() * 0.55;
+      posArr[i * 3] = Math.cos(ang) * raioP;
+      posArr[i * 3 + 1] = -1.25 + rng() * 2.75;
+      posArr[i * 3 + 2] = Math.sin(ang) * raioP;
     }
-    particulasGeo.setAttribute("position", new T.BufferAttribute(posicoes, 3));
-    var particulas = new T.Points(particulasGeo, new T.PointsMaterial({ color: 0x7ff3ff, size: 0.04, transparent: true, opacity: 0.8, sizeAttenuation: true }));
+    var partGeo = new T.BufferGeometry();
+    partGeo.setAttribute("position", new T.BufferAttribute(posArr, 3));
+    var particulas = new T.Points(partGeo, new T.PointsMaterial({ color: 0x8fd8ef, size: 0.05, map: texBrilho, transparent: true, opacity: 0.45, depthWrite: false, blending: T.AdditiveBlending }));
     cena.add(particulas);
 
-    /* --- Desenho do rosto (automático: piscadas, olhar) --- */
-    function rr(c, x, y, w, h, r) {
-      c.beginPath(); c.moveTo(x + r, y);
-      c.arcTo(x + w, y, x + w, y + h, r);
-      c.arcTo(x + w, y + h, x, y + h, r);
-      c.arcTo(x, y + h, x, y, r);
-      c.arcTo(x, y, x + w, y, r); c.closePath();
-    }
+    /* ---------- rosto: expressões + piscar + olhar ---------- */
+    var olhar = { x: 0, y: 0 }, olharAlvo = { x: 0, y: 0 }, olharAte = 0;
+    var piscar = { fase: 0, prox: 1.6 };
 
-    function desenharOlho(ctx, x, y, abertura, olharX, olharY, raio) {
-      raio = raio || 24;
-      if (abertura < 0.15) {
-        /* Piscado: linha curva */
-        ctx.strokeStyle = "#7ff3ff"; ctx.lineWidth = 14;
-        ctx.beginPath();
-        ctx.arc(x, y + 6, raio, Math.PI, 0);
-        ctx.stroke();
-        return;
-      }
-      /* Olho aberto: círculo + pupila que segue olhar */
-      ctx.strokeStyle = "#7ff3ff"; ctx.lineWidth = 12;
-      ctx.beginPath(); ctx.arc(x, y, raio * abertura, 0, Math.PI * 2); ctx.stroke();
-      ctx.fillStyle = "rgba(127, 243, 255, 0.45)";
-      ctx.beginPath(); ctx.arc(x, y, raio * 0.55 * abertura, 0, Math.PI * 2); ctx.fill();
-      /* Pupilas seguem olhar */
-      var px = x + olharX * 6;
-      var py = y + olharY * -6;
-      ctx.fillStyle = "#7ff3ff";
-      ctx.beginPath(); ctx.arc(px, py, raio * 0.22 * abertura, 0, Math.PI * 2); ctx.fill();
-    }
-
-    function desenharRosto(expr, t, aberturaPiscar, olhar) {
-      var W = 512, H = 352;
+    function desenharRosto(expr, t) {
+      var W = 256, H = 184;
       rctx.clearRect(0, 0, W, H);
-      rctx.fillStyle = "#0a1a24";
-      rr(rctx, 6, 6, W - 12, H - 12, 80); rctx.fill();
 
-      rctx.strokeStyle = "rgba(127, 243, 255, 0.15)"; rctx.lineWidth = 1;
-      for (var i = 0; i < 20; i++) {
-        var yLinha = (i * 18 + (t * 40) % 18) % H;
-        rctx.beginPath(); rctx.moveTo(0, yLinha); rctx.lineTo(W, yLinha); rctx.stroke();
-      }
+      rctx.globalAlpha = 0.06;             // scanlines sutis
+      rctx.fillStyle = "#7ff3ff";
+      for (var sy = 2; sy < H; sy += 5) rctx.fillRect(0, sy, W, 1);
+      rctx.globalAlpha = 1;
 
-      rctx.lineCap = "round"; rctx.lineJoin = "round";
-      var eL = W * 0.32, eR = W * 0.68, ey = H * 0.42;
+      rctx.strokeStyle = "#7ff3ff";
+      rctx.fillStyle = "#7ff3ff";
+      rctx.shadowColor = "#38dcff";
+      rctx.shadowBlur = 12;
+      rctx.lineWidth = 11;
+      rctx.lineCap = "round";
 
-      /* Boca */
-      function sorriso(r) {
-        r = r || 40;
-        rctx.strokeStyle = "#7ff3ff"; rctx.lineWidth = 12;
-        rctx.beginPath(); rctx.arc(W / 2, H * 0.6, r, 0.15 * Math.PI, 0.85 * Math.PI); rctx.stroke();
-      }
-      function bocaO() {
-        rctx.strokeStyle = "#7ff3ff"; rctx.lineWidth = 12;
-        rctx.beginPath(); rctx.arc(W / 2, H * 0.7, 18, 0, Math.PI * 2); rctx.stroke();
-      }
-      function bocaTalk() {
-        rctx.fillStyle = "#7ff3ff";
+      var lx = Math.round(olhar.x), ly = Math.round(olhar.y);
+      var eL = 80 + lx, eR = 176 + lx, ey = 72 + ly;
+      var mX = 128 + Math.round(lx * 0.6), mY = 124 + Math.round(ly * 0.4);
+
+      function olhoArco(x, r) { rctx.beginPath(); rctx.arc(x, ey + 8, r, Math.PI, 0); rctx.stroke(); }
+      function olhoRedondo(x, r) { rctx.beginPath(); rctx.arc(x, ey, r, 0, Math.PI * 2); rctx.stroke(); }
+      function olhoFechado(x) { rctx.beginPath(); rctx.moveTo(x - 16, ey + 3); rctx.lineTo(x + 16, ey + 3); rctx.stroke(); }
+      function sorriso(r, cheio) {
         rctx.beginPath();
-        var ab = 10 + 14 * Math.abs(Math.sin(t * 10));
-        rctx.ellipse(W / 2, H * 0.68, 22, ab, 0, 0, Math.PI * 2); rctx.fill();
-      }
-      function bocaTriste() {
-        rctx.strokeStyle = "#7ff3ff"; rctx.lineWidth = 10;
-        rctx.beginPath();
-        rctx.arc(W / 2, H * 0.72, 22, 1.15 * Math.PI, 1.85 * Math.PI);
+        rctx.arc(mX, mY - r * 0.1, r, 0.12 * Math.PI, 0.88 * Math.PI);
+        if (cheio) { rctx.closePath(); rctx.fill(); }
         rctx.stroke();
       }
-
-      var abOlho = 1 - aberturaPiscar;
-
-      switch (expr) {
-        case ESTADO.WAVE:
-          desenharOlho(rctx, eL, ey, abOlho, olhar.x, olhar.y, 24);
-          desenharOlho(rctx, eR, ey, abOlho, olhar.x, olhar.y, 24);
-          sorriso(50); break;
-        case ESTADO.JOY:
-          desenharOlho(rctx, eL, ey, abOlho, olhar.x, olhar.y, 24);
-          desenharOlho(rctx, eR, ey, abOlho, olhar.x, olhar.y, 24);
-          sorriso(58); break;
-        case ESTADO.SURPRISE:
-          desenharOlho(rctx, eL, ey, abOlho, olhar.x, olhar.y, 28);
-          desenharOlho(rctx, eR, ey, abOlho, olhar.x, olhar.y, 28);
-          bocaO(); break;
-        case ESTADO.EMPATHY:
-          desenharOlho(rctx, eL, ey - 4, abOlho * 0.85, olhar.x, olhar.y, 22);
-          desenharOlho(rctx, eR, ey - 4, abOlho * 0.85, olhar.x, olhar.y, 22);
-          bocaTriste(); break;
-        case ESTADO.THINKING:
-          desenharOlho(rctx, eL, ey, abOlho * 0.8, olhar.x, olhar.y, 20);
-          desenharOlho(rctx, eR, ey + 4, abOlho, olhar.x, olhar.y, 26);
-          rctx.strokeStyle = "#7ff3ff"; rctx.lineWidth = 10;
-          rctx.beginPath(); rctx.arc(W / 2, H * 0.64, 14, 0.25 * Math.PI, 0.75 * Math.PI); rctx.stroke();
-          break;
-        case ESTADO.TALKING:
-          desenharOlho(rctx, eL, ey, abOlho, olhar.x, olhar.y, 24);
-          desenharOlho(rctx, eR, ey, abOlho, olhar.x, olhar.y, 24);
-          bocaTalk(); break;
-        default: /* Idle */
-          desenharOlho(rctx, eL, ey, abOlho, olhar.x, olhar.y, 22);
-          desenharOlho(rctx, eR, ey, abOlho, olhar.x, olhar.y, 22);
-          sorriso(34);
+      function bocaO() { rctx.beginPath(); rctx.arc(mX, mY, 14, 0, Math.PI * 2); rctx.fill(); }
+      function bocaFalar() {
+        var a = Math.abs(Math.sin(t * 9)) * 0.7 + Math.abs(Math.sin(t * 13.7)) * 0.3;
+        rctx.beginPath();
+        rctx.ellipse(mX, mY, 15, 4 + 9 * a, 0, 0, Math.PI * 2);
+        rctx.fill();
       }
+      function bocaReta() { rctx.beginPath(); rctx.moveTo(mX - 18, mY); rctx.lineTo(mX + 18, mY + 2); rctx.stroke(); }
 
-      /* Indicador de estado (LED superior direito) */
-      var corLed = "#7ff3ff";
-      if (expr === ESTADO.THINKING) corLed = "#ffb74d";
-      if (expr === ESTADO.TALKING) corLed = "#66bb6a";
-      if (expr === ESTADO.EMPATHY) corLed = "#e5477a";
-      rctx.fillStyle = corLed;
-      rctx.beginPath(); rctx.arc(W - 32, 32, 10, 0, Math.PI * 2); rctx.fill();
-      rctx.fillStyle = corLed + "55";
-      rctx.beginPath(); rctx.arc(W - 32, 32, 16, 0, Math.PI * 2); rctx.fill();
+      var olhos;
+      switch (expr) {
+        case "Joy": olhos = function (x) { olhoArco(x, 22); }; sorriso(34, true); break;
+        case "Wave": olhos = function (x) { olhoArco(x, 20); }; sorriso(28, false); break;
+        case "Surprise": olhos = function (x) { olhoRedondo(x, 21); }; bocaO(); break;
+        case "Thinking": olhos = function (x) { olhoRedondo(x, 12); }; bocaReta(); break;
+        case "Empathy": olhos = function (x) { olhoArco(x, 15); }; sorriso(23, false); break;
+        case "Talk": olhos = function (x) { olhoArco(x, 19); }; bocaFalar(); break;
+        default: olhos = function (x) { olhoRedondo(x, 15); }; sorriso(25, false);
+      }
+      if (piscar.fase > 0) olhos = function (x) { olhoFechado(x); };
+      olhos(eL); olhos(eR);
 
       rostoTex.needsUpdate = true;
     }
 
-    /* --- Poses com transições e variações naturais --- */
+    /* ---------- sistema de poses (com cotovelo + cabeça) ---------- */
     var cur = {
-      eX: 0.15, eZ: 0.28, dX: 0.15, dZ: -0.28,
-      aE: 0, aD: 0,
-      cZ: 0, cX: 0, cY: 0,
-      respiracao: 0,
-      torsoY: 0
-    };
-    var target = {
-      eX: 0.15, eZ: 0.28, dX: 0.15, dZ: -0.28,
-      aE: 0, aD: 0,
-      cZ: 0, cX: 0, cY: 0
+      eX: 0.06, eY: 0, eZ: -0.16, eCX: -0.18, eCZ: 0,
+      dX: 0.06, dY: 0, dZ: 0.16, dCX: -0.18, dCZ: 0,
+      cX: 0, cY: 0, cZ: 0, energia: 1
     };
 
-    function atualizarTarget(t) {
-      /* Base idle sempre presente (respiração + sway) */
-      var sway = Math.sin(t * 0.8 + variacaoPose) * 0.04;
-      var respirar = Math.sin(t * 1.4) * 0.025;
-      target.eX = 0.15 + respirar;
-      target.eZ = 0.28 + sway;
-      target.dX = 0.15 + respirar;
-      target.dZ = -0.28 - sway;
-      target.aE = 0; target.aD = 0;
-      target.cZ = sway * 0.3;
-      target.cX = Math.sin(t * 0.6 + 1.3 + variacaoPose) * 0.04;
-      target.cY = Math.sin(t * 0.5 + variacaoPose) * 0.08;
-
-      /* Olhar segue mouse (cabeça acompanha) */
-      target.cY += olharAlvo.x * 0.25;
-      target.cX += olharAlvo.y * -0.15;
-
-      /* Sobrescrita por estado */
-      switch (estadoAtual) {
-        case ESTADO.WAVE:
-          target.dX = -0.3;
-          target.dZ = -2.4 + Math.sin(t * 6) * 0.3;
-          target.cY = 0.15 + olharAlvo.x * 0.2;
-          target.cX = -0.08;
+    function alvosPose(t) {
+      var p = {
+        eX: 0.06, eY: 0, eZ: -0.16, eCX: -0.18, eCZ: 0,
+        dX: 0.06, dY: 0, dZ: 0.16, dCX: -0.18, dCZ: 0,
+        cX: 0.02 * Math.sin(t * 0.7), cY: 0, cZ: 0.025 * Math.sin(t * 0.5),
+        energia: 1
+      };
+      switch (anim.atual) {
+        case "Wave":
+          p.dX = 0.1; p.dZ = 2.45 + 0.16 * Math.sin(t * 7);
+          p.dCX = -0.25; p.dCZ = 0.5 * Math.sin(t * 7 + 0.7);
+          p.cX = -0.05; p.cY = -0.1; p.cZ = -0.08;
+          p.energia = 1.4;
           break;
-        case ESTADO.JOY:
-          target.eX = 0.1; target.eZ = 2.7 + Math.sin(t * 4) * 0.1;
-          target.dX = 0.1; target.dZ = -2.7 - Math.sin(t * 4) * 0.1;
-          target.cY = Math.sin(t * 5) * 0.1;
-          target.cX = -0.15;
+        case "Talk":
+          p.dX = -0.9 + 0.14 * Math.sin(t * 3.4); p.dZ = 0.4;
+          p.dCX = -1.15 + 0.24 * Math.sin(t * 3.4 + 1.2); p.dCZ = 0.12;
+          p.eX = -0.15; p.eZ = -0.18; p.eCX = -1.0; p.eCZ = -0.08;
+          p.cX = 0.045 * Math.sin(t * 2.6); p.cY = 0.05 * Math.sin(t * 1.3);
+          p.energia = 1.15;
           break;
-        case ESTADO.SURPRISE:
-          target.eX = 0; target.eZ = 2.2;
-          target.dX = 0; target.dZ = -2.2;
-          target.cX = -0.25;
+        case "Empathy":
+          p.eX = -0.6; p.eZ = 0.75; p.eCX = -1.9; p.eCZ = 0.1;   // mão no coração
+          p.dX = 0.08; p.dZ = 0.18; p.dCX = -0.5;
+          p.cX = 0.09; p.cY = 0.06; p.cZ = 0.18;                 // cabeça inclinada
           break;
-        case ESTADO.EMPATHY:
-          target.eX = -1.4; target.eZ = -0.4;
-          target.dX = 0.3; target.dZ = -0.15;
-          target.cX = 0.2;
-          target.cY = 0.15;
-          target.cZ = 0.08;
+        case "Thinking":
+          p.dX = -0.9; p.dZ = 0.35; p.dCX = -2.2; p.dCZ = 0.08;  // mão no queixo
+          p.eX = -0.35; p.eZ = -0.18; p.eCX = -1.35;             // braço cruzado
+          p.cX = 0.1; p.cY = 0.1; p.cZ = -0.05;
           break;
-        case ESTADO.THINKING:
-          target.dX = -1.6; target.dZ = -0.4;
-          target.aD = -0.9;
-          target.cZ = 0.22;
-          target.cX = 0.12 + Math.sin(t * 2) * 0.03;
-          target.cY = 0.25 + Math.sin(t * 1.5) * 0.1;
+        case "Joy":
+          p.eX = 0; p.eZ = -2.45; p.eCX = -0.3; p.eCZ = -0.25;
+          p.dX = 0; p.dZ = 2.45; p.dCX = -0.3; p.dCZ = 0.25;
+          p.cX = -0.1;
+          p.energia = 2.2;
           break;
-        case ESTADO.TALKING:
-          target.dX = -0.7 + Math.sin(t * 5) * 0.15;
-          target.dZ = -0.4;
-          target.aD = -0.5 + Math.sin(t * 6) * 0.1;
-          target.eX = -0.2; target.eZ = 0.5 + Math.sin(t * 3 + 1) * 0.1;
-          target.aE = -0.3 + Math.sin(t * 4) * 0.1;
-          target.cY = Math.sin(t * 3) * 0.12;
-          target.cX = Math.sin(t * 2.3) * 0.05;
+        case "Surprise":
+          p.eX = -0.45; p.eZ = -1.25; p.eCX = -0.55; p.eCZ = -0.15;
+          p.dX = -0.45; p.dZ = 1.25; p.dCX = -0.55; p.dCZ = 0.15;
+          p.cX = 0.13;
+          p.energia = 1.8;
           break;
       }
+      if (atento && anim.atual === "Idle") { p.cX = 0.09; p.cY = 0.05; }
+      return p;
     }
 
+    /* ---------- interação: arrastar para girar + partes clicáveis ---------- */
     var girando = false, gx = 0, rotY = 0, rotYAlvo = 0;
-    renderer.domElement.addEventListener("pointerdown", function (e) { girando = true; gx = e.clientX; });
-    window.addEventListener("pointermove", function (e) {
-      if (!girando) return;
-      rotYAlvo += (e.clientX - gx) * 0.006; gx = e.clientX;
-    });
-    window.addEventListener("pointerup", function () { girando = false; });
+    var downX = 0, downY = 0, arrastou = false;
+    var raio = new T.Raycaster(), pt2 = new T.Vector2();
+    var clicaveis = [];
+    var ultimoBoop = 0;
 
-    var ultimoTempo = performance.now();
+    coracao.userData.acao = "coracao"; clicaveis.push(coracao);
+    cranio.userData.acao = "cabeca"; clicaveis.push(cranio);
+    cascoVisor.userData.acao = "cabeca"; clicaveis.push(cascoVisor);
+
+    function ativar(acao) {
+      if (acao === "coracao") {
+        tocar("Joy", 2600);
+        mensagem("bot", "💡 " + DICAS[dicaIdx++ % DICAS.length]);
+      } else if (acao === "cabeca") {
+        tocar("Surprise", 2000);
+        var agoraMs = Date.now();
+        if (agoraMs - ultimoBoop > 9000) {
+          ultimoBoop = agoraMs;
+          mensagem("bot", "Bip bop! Toque no meu coração para uma dica de saúde. 💚");
+        }
+      }
+    }
+    function raycast(ev) {
+      var r = renderer.domElement.getBoundingClientRect();
+      pt2.x = ((ev.clientX - r.left) / r.width) * 2 - 1;
+      pt2.y = -((ev.clientY - r.top) / r.height) * 2 + 1;
+      raio.setFromCamera(pt2, camera);
+      var hits = raio.intersectObjects(clicaveis, false);
+      return hits.length ? hits[0].object.userData.acao : null;
+    }
+
+    renderer.domElement.addEventListener("pointerdown", function (e) {
+      girando = true; arrastou = false;
+      gx = e.clientX; downX = e.clientX; downY = e.clientY;
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (girando) {
+        if (Math.abs(e.clientX - downX) + Math.abs(e.clientY - downY) > 6) arrastou = true;
+        rotYAlvo += (e.clientX - gx) * 0.006; gx = e.clientX;
+      } else if (!painel.hidden) {
+        renderer.domElement.style.cursor = raycast(e) ? "pointer" : "grab";
+      }
+    });
+    window.addEventListener("pointerup", function (e) {
+      if (girando && !arrastou) {
+        var a = raycast(e);
+        if (a) ativar(a);
+      }
+      girando = false;
+    });
+
+    /* ---------- laço principal ---------- */
+    var relogio = new T.Clock();
     function loop() {
       requestAnimationFrame(loop);
-      if (painel.hidden) return;
-      var agora = performance.now();
-      var dt = (agora - ultimoTempo) / 1000;
-      ultimoTempo = agora;
-      var t = agora / 1000;
+      if (painel.hidden) { relogio.getDelta(); return; }
+      var dt = Math.min(relogio.getDelta(), 0.05);
+      simT += dt;
+      var t = simT;
 
-      tempoNoEstado += dt;
+      if (anim.fim <= t && (anim.atual !== "Idle" || anim.fila.length)) avancar();
 
-      /* --- Piscadas automáticas em Idle --- */
-      if (estadoAtual === ESTADO.IDLE) {
-        proximoPiscar -= dt;
-        if (piscando > 0) {
-          piscando += dt * 12;
-          if (piscando >= 2) { piscando = 0; }
-          else if (piscando > 1) { piscando = 2 - piscando; }
-        } else if (proximoPiscar <= 0) {
-          piscando = 0.01;
-          proximoPiscar = 2.5 + Math.random() * 4;
-        }
-      } else {
-        piscando = 0; /* Sem piscar em estados ativos (olhos fixos na expressão) */
+      /* piscar automático (com piscada dupla ocasional) */
+      if (t >= piscar.prox) {
+        piscar.fase = 0.13;
+        piscar.prox = t + (reduzido ? 5 : 2.2) + rng() * 3.6;
+        if (rng() < 0.15) piscar.prox = t + 0.34;
       }
+      if (piscar.fase > 0) piscar.fase -= dt;
 
-      /* --- Interpolação suave do olhar --- */
-      olharAtual.x += (olharAlvo.x - olharAtual.x) * 0.08;
-      olharAtual.y += (olharAlvo.y - olharAtual.y) * 0.08;
+      /* direção do olhar por estado + vagueio no idle */
+      if (anim.atual === "Thinking") { olharAlvo.x = 7; olharAlvo.y = -11; }
+      else if (anim.atual === "Talk") { olharAlvo.x = 5 * Math.sin(t * 1.1); olharAlvo.y = 0; }
+      else if (atento) { olharAlvo.x = 0; olharAlvo.y = 9; }
+      else if (t >= olharAte) {
+        if (olharAlvo.x !== 0 || olharAlvo.y !== 0) {
+          olharAlvo.x = 0; olharAlvo.y = 0;
+          olharAte = t + 1.8 + rng() * 4;
+        } else {
+          olharAlvo.x = (rng() < 0.5 ? -1 : 1) * (8 + rng() * 8);
+          olharAlvo.y = (rng() - 0.5) * 8;
+          olharAte = t + 0.6 + rng() * 0.7;
+        }
+      }
+      var kO = 1 - Math.exp(-dt * 9);
+      olhar.x += (olharAlvo.x - olhar.x) * kO;
+      olhar.y += (olharAlvo.y - olhar.y) * kO;
 
-      atualizarTarget(t);
+      /* pose suavizada */
+      var p = alvosPose(t);
+      var k = 1 - Math.exp(-dt * 7);
+      for (var chave in p) cur[chave] += (p[chave] - cur[chave]) * k;
 
-      var k = 0.1;
-      cur.eX += (target.eX - cur.eX) * k; cur.eZ += (target.eZ - cur.eZ) * k;
-      cur.dX += (target.dX - cur.dX) * k; cur.dZ += (target.dZ - cur.dZ) * k;
-      cur.aE += (target.aE - cur.aE) * k; cur.aD += (target.aD - cur.aD) * k;
-      cur.cZ += (target.cZ - cur.cZ) * k;
-      cur.cX += (target.cX - cur.cX) * k;
-      cur.cY += (target.cY - cur.cY) * k;
+      bracoE.raiz.rotation.set(cur.eX, cur.eY, cur.eZ);
+      bracoE.cot.rotation.set(cur.eCX, 0, cur.eCZ);
+      bracoD.raiz.rotation.set(cur.dX, cur.dY, cur.dZ);
+      bracoD.cot.rotation.set(cur.dCX, 0, cur.dCZ);
+      cabeca.rotation.set(cur.cX + olhar.y * 0.008, cur.cY + olhar.x * 0.01, cur.cZ);
 
-      bracoE.grupo.rotation.set(cur.eX, 0, cur.eZ);
-      bracoE.antebraco.rotation.x = cur.aE;
-      bracoD.grupo.rotation.set(cur.dX, 0, cur.dZ);
-      bracoD.antebraco.rotation.x = cur.aD;
-      cabeca.rotation.set(cur.cX, cur.cY, cur.cZ);
-
-      desenharRosto(estadoAtual, t, piscando, olharAtual);
-
-      rotY += (rotYAlvo - rotY) * 0.12;
+      rotY += (rotYAlvo - rotY) * (1 - Math.exp(-dt * 8));
       robo.rotation.y = rotY;
 
       if (!reduzido) {
-        robo.position.y = Math.sin(t * 1.4) * 0.08;
-        anel.scale.setScalar(1 + Math.sin(t * 2.2) * 0.05);
-        anelGlow.material.opacity = 0.15 + Math.sin(t * 2.2) * 0.08;
-        var pulso = 1 + Math.sin(t * 3.5) * 0.12;
-        coracao.scale.set(pulso, pulso, 1);
-        coracaoGlow.scale.set(pulso, pulso, 1);
-        coracaoGlow.material.opacity = 0.2 + Math.sin(t * 3.5) * 0.2;
-        matCircuito.opacity = 0.4 + Math.sin(t * 3 + Math.PI) * 0.3;
-        particulas.rotation.y = t * 0.15;
-        var posArr = particulas.geometry.attributes.position.array;
-        for (var i = 0; i < pCount; i++) {
-          posArr[i * 3 + 1] += 0.003;
-          if (posArr[i * 3 + 1] > 2) posArr[i * 3 + 1] = -2;
-        }
-        particulas.geometry.attributes.position.needsUpdate = true;
+        robo.position.y = Math.sin(t * 1.7) * 0.05 * Math.min(cur.energia, 1.6);
+        robo.rotation.z = Math.sin(t * 0.85) * 0.02;
+        anel.scale.setScalar(1 + Math.sin(t * 2.6) * 0.07);
+        anel.material.opacity = 0.65 + Math.sin(t * 2.6) * 0.25;
+        motor.material.opacity = 0.4 + Math.abs(Math.sin(t * 4.4)) * 0.3;
+        brilhoCoracao.material.opacity = 0.45 + Math.sin(t * 3.4) * 0.25;
+        particulas.rotation.y = t * 0.06;
       }
+      coracao.scale.setScalar(1.05 + Math.sin(t * 3.4) * 0.09);
+      coracao.rotation.z = 0.06 * Math.sin(t * 3.4);
+      brilhoCoracao.scale.setScalar(0.55 + Math.sin(t * 3.4) * 0.06);
 
+      desenharRosto(anim.atual, t);
       renderer.render(cena, camera);
     }
     loop();
@@ -583,7 +673,12 @@ barra.style.display = "none";
       var w = palco.clientWidth, h = palco.clientHeight;
       if (!w || !h) return;
       renderer.setSize(w, h);
-      camera.aspect = w / h; camera.updateProjectionMatrix();
+      camera.aspect = w / h;
+      /* em painel estreito, afasta a câmera para os braços não cortarem */
+      var z = Math.max(4.9, 1.35 / (0.3443 * camera.aspect));
+      camera.position.set(0, 0.34, z);
+      camera.lookAt(0, 0.09, 0);
+      camera.updateProjectionMatrix();
     };
     window.addEventListener("resize", redimensionar);
   }
