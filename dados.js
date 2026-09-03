@@ -818,6 +818,12 @@ const galeria = [
     legenda: "EXPOTEC 2026",
     categoria: "Oficina",
     data: "2026-08-28"
+  },
+  {
+    arquivo: "img/galeria/foto-20.jpg",
+    legenda: "EXPOTEC 2026",
+    categoria: "Oficina",
+    data: "2026-08-28"
   }
 ];
 
