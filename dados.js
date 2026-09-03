@@ -754,12 +754,6 @@ const galeria = [
     data: "2026-08-19"
   },
   {
-    arquivo: "img/galeria/foto-08.jpg",
-    legenda: "Roda de planejamento e organização.",
-    categoria: "Pesquisa",
-    data: "2026-06-19"
-  },
-  {
     arquivo: "img/galeria/foto-09.jpg",
     legenda: "Sistematização dos dados e registros fotográficos da pesquisa territorial.",
     categoria: "Pesquisa",
