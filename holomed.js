@@ -122,35 +122,50 @@ barra.style.display = "none";
   }
 
   async function perguntarVireonix(pergunta) {
-    var ctrl = new AbortController();
-    var t = setTimeout(function () { ctrl.abort(); }, 12000);
-    try {
-      var corpo = {
-        model: VIREONIX_MODEL,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: pergunta }
-        ],
-        temperature: 0.2,
-        stream: false
-      };
-      var r = await fetch(VIREONIX_URL, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(corpo),
-        signal: ctrl.signal
-      });
-      clearTimeout(t);
-      if (!r.ok) return null;
-      var d = await r.json();
-      return (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || null;
-    } catch (e) {
-      clearTimeout(t);
-      return null;
+  try {
+    var corpo = {
+      model: "auto",
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: pergunta }
+      ],
+      temperature: 0.2,
+      stream: false
+    };
+
+    var r = await fetch("https://vireonix.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(corpo)
+    });
+
+    var textoResposta = await r.text();
+
+    console.log("STATUS VIREONIX:", r.status);
+    console.log("RESPOSTA VIREONIX:", textoResposta);
+
+    if (!r.ok) {
+      return "ERRO HTTP " + r.status + ": " + textoResposta;
     }
+
+    var d = JSON.parse(textoResposta);
+
+    console.log("JSON:", d);
+
+    return (
+      d.choices &&
+      d.choices[0] &&
+      d.choices[0].message &&
+      d.choices[0].message.content
+    ) || null;
+
+  } catch (e) {
+    console.error("ERRO VIREONIX:", e);
+    return "ERRO: " + e.message;
   }
+}
 
   form.addEventListener("submit", async function (ev) {
     ev.preventDefault();
