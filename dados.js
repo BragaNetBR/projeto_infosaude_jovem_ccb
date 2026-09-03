@@ -821,9 +821,9 @@ const galeria = [
   },
   {
     arquivo: "img/galeria/foto-20.jpg",
-    legenda: "EXPOTEC 2026",
+    legenda: "Ação dos agentes de saúde na escola",
     categoria: "Oficina",
-    data: "2026-08-28"
+    data: "2026-09-03"
   }
 ];
 
