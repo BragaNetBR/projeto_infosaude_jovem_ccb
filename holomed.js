@@ -1,11 +1,12 @@
 /* =====================================================================
-HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + GEMINI
+HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + VIREONIX
 ===================================================================== */
 (function () {
   "use strict";
 
-  var GEMINI_KEY = "AIzaSyBx5P-qEmQk0AVLhx_pHoL5AwjfhoEyB5Y";
-  var GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=" + GEMINI_KEY;
+  var VIREONIX_KEY = " ";
+  var VIREONIX_MODEL = "auto";
+  var VIREONIX_URL = "https://vireonix.ai/v1/chat/completions";
 
   var SYSTEM_PROMPT = "Você é Jarvis, assistente virtual educativo do Projeto Infosaúde Jovem CCB (Escola Estadual Carlos de Castro Brasil, Corumbá-MS). Público: adolescentes 12-18 anos.\n\n" +
     "REGRAS OBRIGATÓRIAS:\n" +
@@ -120,24 +121,31 @@ barra.style.display = "none";
     return pontos >= 2 ? melhor : null;
   }
 
-  async function perguntarGemini(pergunta) {
+  async function perguntarVireonix(pergunta) {
     var ctrl = new AbortController();
     var t = setTimeout(function () { ctrl.abort(); }, 12000);
     try {
       var corpo = {
-        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        contents: [{ role: "user", parts: [{ text: pergunta }] }]
+        model: VIREONIX_MODEL,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: pergunta }
+        ],
+        temperature: 0.2,
+        stream: false
       };
-      var r = await fetch(GEMINI_URL, {
+      var r = await fetch(VIREONIX_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(corpo),
         signal: ctrl.signal
       });
       clearTimeout(t);
       if (!r.ok) return null;
       var d = await r.json();
-      return (d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts && d.candidates[0].content.parts[0].text) || null;
+      return (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || null;
     } catch (e) {
       clearTimeout(t);
       return null;
@@ -166,7 +174,7 @@ barra.style.display = "none";
       return;
     }
 
-    var ia = await perguntarGemini(texto);
+    var ia = await perguntarVireonix(texto);
     if (ia) {
       mudarEstado(ESTADO.TALKING, Math.min(5000, ia.length * 40));
       loading.textContent = ia;
