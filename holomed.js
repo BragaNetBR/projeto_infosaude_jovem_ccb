@@ -4,9 +4,8 @@ HOLOMED — ANIMAÇÕES AUTOMÁTICAS CONTEXTUAIS + VIREONIX
 (function () {
   "use strict";
 
-  var VIREONIX_KEY = " ";
   var VIREONIX_MODEL = "auto";
-  var VIREONIX_URL = "https://vireonix.ai/v1/chat/completions";
+  var VIREONIX_URL = "https://projetoinfosaudejovemccb.gb546142.workers.dev/";
 
   var SYSTEM_PROMPT = "Você é Jarvis, assistente virtual educativo do Projeto Infosaúde Jovem CCB (Escola Estadual Carlos de Castro Brasil, Corumbá-MS). Público: adolescentes 12-18 anos.\n\n" +
     "REGRAS OBRIGATÓRIAS:\n" +
