@@ -158,7 +158,7 @@ O Infosaúde Jovem CCB trabalha com as 14 temáticas do Programa Saúde na Escol
     botao.setAttribute("aria-expanded", "true");
     redimensionar();
     mudarEstado(ESTADO.WAVE, 2200);
-    if (!chat.children.length) mensagem("bot", "Oi! Sou o Jarvis 💚 Pergunte sobre saúde mental, drogas, ISTs, bullying…");
+    if (!chat.children.length) mensagem("bot", "Oi! Sou o Jarvis 💚 Pergunte sobre qualquer coisa relacionada a saúde");
     input.focus();
   }
   function fechar() {
