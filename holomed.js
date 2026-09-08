@@ -123,7 +123,7 @@ HOLOMED — INTEGRAÇÃO CLOUDFLARE WORKER (projetoinfosaudejovemccb)
         { role: "user", content: pergunta }
       ],
       model: "auto",
-      temperature: 0.7,
+      temperature: 0.2,
       max_tokens: 2048
     };
 
