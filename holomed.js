@@ -118,34 +118,49 @@ HOLOMED — INTEGRAÇÃO CLOUDFLARE WORKER (projetoinfosaudejovemccb)
   }
 
   async function perguntarWorker(pergunta) {
-    try {
-      var corpo = {
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: pergunta }
-        ],
-        model: "auto",
-        temperature: 0.7,
-        max_tokens: 2048
-      };
+  try {
+    var corpo = {
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: pergunta }
+      ],
+      model: "auto",
+      temperature: 0.7,
+      max_tokens: 2048
+    };
 
-      var r = await fetch(WORKER_URL + "/v1/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(corpo)
-      });
+    var r = await fetch(WORKER_URL + "/v1/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(corpo)
+    });
 
-      if (!r.ok) return null;
-
-      var d = await r.json();
-      if (d.success && d.response) return d.response.trim();
-      return null;
-
-    } catch (e) {
-      console.error("Worker error:", e);
+    if (!r.ok) {
+      console.error("HTTP error:", r.status);
       return null;
     }
+
+    var d = await r.json();
+    console.log("Worker response:", d); // DEBUG
+
+    // Formato unificado (Worker correto)
+    if (d.success && d.response) {
+      return d.response.trim();
+    }
+
+    // Formato OpenAI bruto (Worker repassando direto)
+    if (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) {
+      return d.choices[0].message.content.trim();
+    }
+
+    console.warn("Formato de resposta não reconhecido:", d);
+    return null;
+
+  } catch (e) {
+    console.error("Worker fetch error:", e);
+    return null;
   }
+}
 
   form.addEventListener("submit", async function (ev) {
     ev.preventDefault();
