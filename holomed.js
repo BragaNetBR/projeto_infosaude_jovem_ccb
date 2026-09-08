@@ -82,7 +82,7 @@ HOLOMED — INTEGRAÇÃO CLOUDFLARE WORKER (projetoinfosaudejovemccb)
     botao.setAttribute("aria-expanded", "true");
     redimensionar();
     mudarEstado(ESTADO.WAVE, 2200);
-    if (!chat.children.length) mensagem("bot", "Oi! Sou o Jarvis 💚 Pergunte sobre qualquer coisa relacionada a saúde");
+    if (!chat.children.length) mensagem("bot", "Oi! Sou o Jarvis 💚 Pergunte sobre qualquer coisa relacionada a saúde.");
     input.focus();
   }
   function fechar() {
