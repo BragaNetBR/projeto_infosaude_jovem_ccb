@@ -4,7 +4,7 @@ HOLOMED — INTEGRAÇÃO CLOUDFLARE WORKER (projetoinfosaudejovemccb)
 (function () {
   "use strict";
 
-  var WORKER_URL = "https://projetoinfosaudejovemccb.gb546142.workers.dev";
+  var WORKER_URL = "https://bragaintelligence.gb546142.workers.dev";
 
   var SYSTEM_PROMPT = "Você é Jarvis, assistente virtual educativo do projeto Infosaúde Jovem CCB, da Escola Estadual Carlos de Castro Brasil, Corumbá-MS, criado por estudantes dos 3º anos A e B. Responda sempre em pt-BR. Público: jovens de 12 a 24 anos.\n\n" +
 "OBJETIVO: responder dúvidas anônimas sobre saúde e bem-estar com informação clara, segura, precisa e útil.\n\n" +
