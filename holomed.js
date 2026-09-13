@@ -117,45 +117,39 @@ HOLOMED — INTEGRAÇÃO CLOUDFLARE WORKER (projetoinfosaudejovemccb)
 
   async function perguntarWorker(pergunta) {
   try {
-    var corpo = {
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: pergunta }
-      ],
-      model: "auto",
+    const corpo = {
+      messages: [{ role: "user", content: pergunta }],
       temperature: 0.2,
       max_tokens: 2048
     };
-
-    var r = await fetch(WORKER_URL + "/v1/chat", {
+    const r = await fetch(WORKER_URL + "/v1/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(corpo)
     });
+    if (!r.ok) return null;
 
-    if (!r.ok) {
-      console.error("HTTP error:", r.status);
-      return null;
+    const reader = r.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "", result = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const events = buffer.split("\n\n");
+      buffer = events.pop();
+      for (const evt of events) {
+        if (evt.startsWith("event: token\ndata: ")) {
+          try {
+            const j = JSON.parse(evt.slice("event: token\ndata: ".length));
+            if (j.token) result += j.token;
+          } catch {}
+        }
+      }
     }
-
-    var d = await r.json();
-    console.log("Worker response:", d); // DEBUG
-
-    // Formato unificado (Worker correto)
-    if (d.success && d.response) {
-      return d.response.trim();
-    }
-
-    // Formato OpenAI bruto (Worker repassando direto)
-    if (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) {
-      return d.choices[0].message.content.trim();
-    }
-
-    console.warn("Formato de resposta não reconhecido:", d);
-    return null;
-
+    return result.trim() || null;
   } catch (e) {
-    console.error("Worker fetch error:", e);
+    console.error("Worker error:", e);
     return null;
   }
 }
